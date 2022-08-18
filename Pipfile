@@ -9,6 +9,7 @@ django-cloudinary-storage = "*"
 pillow = "*"
 django-phonenumber-field = "*"
 django-phonenumbers = "*"
+djangorestframework = "*"
 
 [dev-packages]
 
