@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Profile
+from .models import Profile, User
 
 class ProfileSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
@@ -19,3 +19,20 @@ class ProfileSerializer(serializers.ModelSerializer):
             'phone_number', 'image', 'created_at', 'updated_at',
             'is_owner',
         ]
+
+    def update(self, instance, validated_data):
+        """
+        Custom Update method to handle sourced fields in Profile serializer
+        """
+        # saving User instances
+        user_data = validated_data.pop('owner')
+        user = instance.owner
+        for k,v in user_data.items():
+            setattr(user, k, v)
+        user.save()
+        #saving Profile instances
+        instance.phone_number = validated_data.get('phone_number', instance.phone_number)
+        instance.image = validated_data.get('image', instance.image)
+        instance.save()
+
+        return instance
