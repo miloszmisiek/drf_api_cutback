@@ -1,9 +1,14 @@
 from django.db import models
+from django.db.models import Q
 from django.conf import settings
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
+from django.dispatch import receiver
 from djmoney.models.fields import MoneyField
 
 class Product(models.Model):
+    """
+    Model for Product object in the database.
+    """
     
     CATEGORIES = [
         (0, "Boards"),
@@ -32,10 +37,16 @@ class Product(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
+        """
+        String representation of Product object.
+        """
         return self.title
 
 
 class ProductImage(models.Model):
+    """
+    Model for Product image object in the database.
+    """
     product = models.ForeignKey(
         Product, default=None, on_delete=models.CASCADE, related_name="product_images"
     )
@@ -44,11 +55,36 @@ class ProductImage(models.Model):
     )
 
     def __str__(self):
+        """
+        String representation of Product's image object.
+        """
         return self.image.url
 
+
+# django-signals functions
+@receiver(post_save, sender=Product)
 def create_image(sender, instance, created, **kwargs):
-    print(ProductImage.objects.filter(product=instance))
+    """
+    Method creates ProductImage instance with default image 
+    when post_save signal is received on Product instance creation.
+    """
     if created and not ProductImage.objects.filter(product=instance):
         ProductImage.objects.create(product=instance)
 
-post_save.connect(create_image, sender=Product)
+@receiver(pre_save, sender=ProductImage)
+def delete_default(sender, instance, **kwargs):
+    """
+    Method deletes the default image only 
+    when pre_save signal is received on ProductImage instance creation
+    and default image exists as an instance's product key.
+    """
+    
+    default_image = "../default-image_aqtoyb"
+    
+    ProductImage.objects.filter(
+        product=instance.product.id,
+        image=default_image
+    ).delete() if ProductImage.objects.filter(
+        product=instance.product.id,
+        image=default_image
+    ) else None
