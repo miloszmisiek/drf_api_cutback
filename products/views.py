@@ -28,5 +28,11 @@ class ProductImages(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     queryset = ProductImage.objects.all()
 
-    def perform_create(self, serializer):
-        serializer.save(product=self.request.product)
+    # def perform_create(self, serializer):
+    #     print(self.request.image)
+    #     # serializer.save(product=self.request.product)
+
+class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = ProductSerializer # renders nice looking form in the UI
+    permission_classes = [IsOwnerOrReadOnly] #only post owner can edit or delete post
+    queryset = Product.objects.all()

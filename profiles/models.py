@@ -9,6 +9,9 @@ class User(AbstractUser):
     email = models.EmailField(max_length=50, unique=True, blank=False)
     first_name = models.CharField(max_length=50, blank=False)
     last_name = models.CharField(max_length=50, blank=False)
+
+    def __str__(self):
+        return self.username
     
 class Profile(models.Model):
     owner = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

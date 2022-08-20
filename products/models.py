@@ -10,13 +10,14 @@ class Product(models.Model):
     Model for Product object in the database.
     """
     
-    CATEGORIES = [
+    CATEGORIES = (
         (0, "Boards"),
         (1, "Kites"),
         (2, "Wetsuits"),
         (3, "Harnesses"),
         (4, "Others"),
-    ]
+    )
+    
     CURRENCY_CHOICES = (
         ('EUR', 'EUR'),
         ('USD', 'USD'),
