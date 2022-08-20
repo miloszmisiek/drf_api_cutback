@@ -52,8 +52,11 @@ INSTALLED_APPS = [
     'cloudinary',
     'rest_framework',
     'phonenumber_field',
+    'djmoney',
 
     'profiles',
+    'products',
+    'ratings',
 ]
 
 MIDDLEWARE = [
