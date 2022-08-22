@@ -17,6 +17,14 @@ class ProductSerializer(serializers.ModelSerializer):
     category_name = serializers.ReadOnlyField(source='get_category_display')
     price_currency = serializers.ChoiceField(choices=Product.CURRENCY_CHOICES)
     gallery = serializers.SerializerMethodField()
+    ratings_count = serializers.ReadOnlyField()
+    score_count_1 = serializers.ReadOnlyField()
+    score_count_2 = serializers.ReadOnlyField()
+    score_count_3 = serializers.ReadOnlyField()
+    score_count_4 = serializers.ReadOnlyField()
+    score_count_5 = serializers.ReadOnlyField()
+    score_avg = serializers.ReadOnlyField()
+
     
     def get_gallery(self, product):
         return_list = []
@@ -34,6 +42,8 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = (
             'id', 'owner', 'category', 'category_name',
             'price','price_currency', 'title', 'description', 'brand',
-            'inStock', 'created_at', 'updated_at', 'gallery'
+            'inStock', 'created_at', 'updated_at', 'gallery', 'ratings_count', 'score_count_1',
+            'score_count_2', 'score_count_3', 'score_count_4', 'score_count_5', 'score_avg',
+
         )
         
