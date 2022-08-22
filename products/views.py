@@ -1,16 +1,13 @@
-from django.db.models import Count, Q, Avg
 from rest_framework import generics, permissions
 from drf_api_cutback.permissions import IsOwnerOrReadOnly
 from .models import Product, ProductImage
-from ratings.models import Rating
 from .serializers import ProductSerializer, ImageSerializer
 
 class ProductList(generics.ListCreateAPIView):
     """
-    List all followers, i.e. all instances of a user
-    following another user'.
-    Create a follower, i.e. follow a user if logged in.
-    Perform_create: associate the current logged in user with a follower.
+    List all Products.
+    Authenticated users can create new instances of Products.
+    Create method saves current user as owner.
     """
     serializer_class = ProductSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
@@ -46,10 +43,8 @@ class ProductList(generics.ListCreateAPIView):
 
 class ProductImages(generics.ListCreateAPIView):
     """
-    List all followers, i.e. all instances of a user
-    following another user'.
-    Create a follower, i.e. follow a user if logged in.
-    Perform_create: associate the current logged in user with a follower.
+    List all Products images.
+    Authenticated users can create new instances of Products images.
     """
     serializer_class = ImageSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
@@ -60,6 +55,10 @@ class ProductImages(generics.ListCreateAPIView):
     #     # serializer.save(product=self.request.product)
 
 class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = ProductSerializer # renders nice looking form in the UI
-    permission_classes = [IsOwnerOrReadOnly] #only post owner can edit or delete post
+    """
+    List specific Product by it's id.
+    The owner of the Product instance can update or delete the product from the database.
+    """
+    serializer_class = ProductSerializer
+    permission_classes = [IsOwnerOrReadOnly]
     queryset = Product.objects.all()

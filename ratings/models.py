@@ -1,12 +1,14 @@
 from django.db import models
 from django.conf import settings
-# from django.core.validators import MaxValueValidator, MinValueValidator
 from products.models import Product
 
 
 class Rating(models.Model):
+    """
+    The Rating model with releation to User and Product model..
+    """
     RATE_CHOICES = (
-        (5, "excellence"),
+        (5, "excellent"),
         (4, "very good"),
         (3, "good"),
         (2, "poor"),
@@ -24,4 +26,7 @@ class Rating(models.Model):
         unique_together = ['owner', 'product']
 
     def __str__(self):
+        """
+        Returns string represenation of rating's owner an rated product.
+        """
         return f"{self.owner} {self.product}"

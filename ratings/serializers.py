@@ -3,6 +3,9 @@ from rest_framework import serializers
 from .models import Rating
 
 class RatingSerializer(serializers.ModelSerializer):
+    """
+    Serilizer for Rating model.
+    """
     owner = serializers.ReadOnlyField(source='owner.username')
     product_name = serializers.ReadOnlyField(source='product.title')
     class Meta:

@@ -1,14 +1,12 @@
-from django.db.models import Count
-from rest_framework import generics, filters, permissions #, permissions
-# from django_filters.rest_framework import DjangoFilterBackend #third-party library django-filter
+from rest_framework import generics, permissions
 from .models import Rating
 from .serializers import RatingSerializer
 from drf_api_cutback.permissions import IsOwnerOrReadOnly
 
 class RatingsList(generics.ListCreateAPIView):
     """
-    List all profiles
-    No Create view (post method), as profile creation handled by django signals
+    List all Ratings.
+    Authenticated users can create new Rating instances.
     """
 
     serializer_class = RatingSerializer
@@ -17,9 +15,8 @@ class RatingsList(generics.ListCreateAPIView):
 
 class RatingDetail(generics.RetrieveDestroyAPIView):
     """
-    Retrieve a follower
-    No Update view, as we either follow or unfollow users
-    Destroy a follower, i.e. unfollow someone if owner
+    Retrive a specific Rating.
+    The owner of the Raging can delete it from the database.
     """
     serializer_class = RatingSerializer
     queryset = Rating.objects.all()

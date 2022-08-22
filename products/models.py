@@ -1,5 +1,4 @@
 from django.db import models
-from django.db.models import Q
 from django.conf import settings
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
@@ -9,7 +8,6 @@ class Product(models.Model):
     """
     Model for Product object in the database.
     """
-    
     CATEGORIES = (
         (0, "Boards"),
         (1, "Kites"),
@@ -17,14 +15,12 @@ class Product(models.Model):
         (3, "Harnesses"),
         (4, "Others"),
     )
-    
     CURRENCY_CHOICES = (
         ('EUR', 'EUR'),
         ('USD', 'USD'),
         ('GBP', 'GBP'),
         ('PLN', 'PLN')
     )
-
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     category = models.IntegerField(choices=CATEGORIES, blank=False)
     price = MoneyField(max_digits=10, decimal_places=2, null=True, 
@@ -61,8 +57,7 @@ class ProductImage(models.Model):
         """
         return self.image.url
 
-
-# django-signals functions
+# DJANGO-SIGNALS FUNCTIONS
 @receiver(post_save, sender=Product)
 def create_image(sender, instance, created, **kwargs):
     """
@@ -74,10 +69,11 @@ def create_image(sender, instance, created, **kwargs):
 
 @receiver(pre_save, sender=ProductImage)
 def reject_pictures(sender, instance, **kwargs):
+    """
+    Method raises Exception when saved picture exceeds the fifth allowed for the product.
+    """
     if len(ProductImage.objects.filter(product=instance.product.id)) >= 5:
         raise Exception("Only 5 pictures allowed for a product")
-
-
 
 @receiver(pre_save, sender=ProductImage)
 def delete_default(sender, instance, **kwargs):
@@ -86,9 +82,7 @@ def delete_default(sender, instance, **kwargs):
     when pre_save signal is received on ProductImage instance creation
     and default image exists as an instance's product key.
     """
-    
     default_image = "../default-image_aqtoyb"
-    
     ProductImage.objects.filter(
         product=instance.product.id,
         image=default_image

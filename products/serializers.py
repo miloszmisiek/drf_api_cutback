@@ -1,4 +1,3 @@
-from django.db.models import fields, Count
 from rest_framework import serializers
 from ratings.serializers import RatingSerializer
 from .models import Product, ProductImage
@@ -9,7 +8,6 @@ class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductImage
         fields = ('id', 'product','product_name', 'image' )
-        #print(model)
         
 class ProductSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')

@@ -2,6 +2,10 @@ from rest_framework import serializers
 from .models import Profile
 
 class ProfileSerializer(serializers.ModelSerializer):
+    """
+    Serializer for the Profile model
+    The create method handles the unique constraint on 'owner' and 'post'
+    """
     owner = serializers.ReadOnlyField(source='owner.username')
     email = serializers.EmailField(source='owner.email')
     first_name = serializers.CharField(source='owner.first_name')
@@ -9,6 +13,9 @@ class ProfileSerializer(serializers.ModelSerializer):
     is_owner = serializers.SerializerMethodField()
 
     def get_is_owner(self, obj):
+        """
+        Method checks if the current user is the owner of the profile and returns boolean value.
+        """
         request = self.context['request']
         return request.user == obj.owner
 
