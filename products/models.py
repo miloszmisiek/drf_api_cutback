@@ -73,6 +73,13 @@ def create_image(sender, instance, created, **kwargs):
         ProductImage.objects.create(product=instance)
 
 @receiver(pre_save, sender=ProductImage)
+def reject_pictures(sender, instance, **kwargs):
+    if len(ProductImage.objects.filter(product=instance.product.id)) >= 5:
+        raise Exception("Only 5 pictures allowed for a product")
+
+
+
+@receiver(pre_save, sender=ProductImage)
 def delete_default(sender, instance, **kwargs):
     """
     Method deletes the default image only 

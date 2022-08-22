@@ -5,15 +5,16 @@ from .models import Product, ProductImage
 
 
 class ImageSerializer(serializers.ModelSerializer):
-    product = serializers.ReadOnlyField(source='product.title')
+    product_name = serializers.ReadOnlyField(source='product.title')
     class Meta:
         model = ProductImage
-        fields = ('id', 'product', 'image' )
+        fields = ('id', 'product','product_name', 'image' )
         #print(model)
         
 class ProductSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
     category = serializers.ChoiceField(choices=Product.CATEGORIES)
+    category_name = serializers.ReadOnlyField(source='get_category_display')
     price_currency = serializers.ChoiceField(choices=Product.CURRENCY_CHOICES)
     gallery = serializers.SerializerMethodField()
     
@@ -31,7 +32,7 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = (
-            'id', 'owner', 'category', 
+            'id', 'owner', 'category', 'category_name',
             'price','price_currency', 'title', 'description', 'brand',
             'inStock', 'created_at', 'updated_at', 'gallery'
         )
