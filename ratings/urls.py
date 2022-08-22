@@ -1,7 +1,7 @@
 from django.urls import path
-from profiles import views
+from ratings import views
 
 urlpatterns = [
-    # path('ratings/', views.ProfileList.as_view()),
-    # path('profiles/<int:pk>/', views.ProfileDetail.as_view()),
+    path('ratings/', views.RatingsList.as_view()),
+    path('ratings/<int:pk>/', views.RatingDetail.as_view()),
 ]
