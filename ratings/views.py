@@ -1,4 +1,5 @@
 from rest_framework import generics, permissions
+from django_filters.rest_framework import DjangoFilterBackend
 from .models import Rating
 from .serializers import RatingSerializer
 from drf_api_cutback.permissions import IsOwnerOrReadOnly
@@ -12,6 +13,14 @@ class RatingsList(generics.ListCreateAPIView):
     serializer_class = RatingSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     queryset = Rating.objects.all()
+
+    filter_backends = [
+        DjangoFilterBackend,
+    ]
+    filterset_fields = [
+        'product_rating',
+        'owner'
+    ]
 
 class RatingDetail(generics.RetrieveDestroyAPIView):
     """
