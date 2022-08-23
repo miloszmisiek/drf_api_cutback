@@ -4,6 +4,14 @@ from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from djmoney.models.fields import MoneyField
 
+
+class AvgScoreManager(models.Manager):
+    def get_queryset(self):
+        return super(AvgScoreManager, self).get_queryset().annotate(
+            avg_score=models.Avg('product_rating__score'),
+            all_scores=models.Count('product_rating__score')
+            )
+
 class Product(models.Model):
     """
     Model for Product object in the database.
@@ -32,6 +40,7 @@ class Product(models.Model):
     inStock = models.BooleanField(blank=False, default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    objects = AvgScoreManager()
 
     def __str__(self):
         """

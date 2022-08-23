@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'phonenumber_field',
     'djmoney',
+    'django_filters',
 
     'profiles',
     'products',

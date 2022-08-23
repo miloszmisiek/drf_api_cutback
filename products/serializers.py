@@ -40,8 +40,8 @@ class ProductSerializer(serializers.ModelSerializer):
             for k,v in dict.items():
                 scores.append(v) if k == "score" else None
         return_dict = {item: scores.count(item) for item in scores}
-        return_dict["all_scores"] = len(scores)
-        return_dict["avg"] = sum(scores)/len(scores) if scores else None
+        return_dict["all_scores"] = Product.objects.get(pk=product.id).all_scores
+        return_dict["avg"] = Product.objects.get(pk=product.id).avg_score
         return return_dict
     
     # def get_category(self, category):

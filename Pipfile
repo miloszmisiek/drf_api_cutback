@@ -11,6 +11,7 @@ django-phonenumber-field = "*"
 django-phonenumbers = "*"
 djangorestframework = "*"
 django-money = "*"
+django-filter = "*"
 
 [dev-packages]
 

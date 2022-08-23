@@ -1,4 +1,5 @@
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, filters
+from django_filters.rest_framework import DjangoFilterBackend
 from drf_api_cutback.permissions import IsOwnerOrReadOnly
 from .models import Product, ProductImage
 from .serializers import ProductSerializer, ImageSerializer
@@ -40,6 +41,22 @@ class ProductList(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.OrderingFilter
+    ]
+    filterset_fields = [
+        'owner',
+        'inStock',
+        'category',
+        'brand',
+    ]
+    ordering_fields = [
+        'price',
+        'avg_score',
+        'all_scores',
+    ]
 
 class ProductImages(generics.ListCreateAPIView):
     """
