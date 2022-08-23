@@ -5,9 +5,9 @@ from django.dispatch import receiver
 from djmoney.models.fields import MoneyField
 
 
-class AvgScoreManager(models.Manager):
+class ProductRatingManager(models.Manager):
     def get_queryset(self):
-        return super(AvgScoreManager, self).get_queryset().annotate(
+        return super(ProductRatingManager, self).get_queryset().annotate(
             avg_score=models.Avg('product_rating__score'),
             all_scores=models.Count('product_rating__score')
             )
@@ -40,7 +40,9 @@ class Product(models.Model):
     inStock = models.BooleanField(blank=False, default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    objects = AvgScoreManager()
+    
+    # get access to avg_score and all_scores fields
+    objects = ProductRatingManager()
 
     def __str__(self):
         """
@@ -65,6 +67,7 @@ class ProductImage(models.Model):
         String representation of Product's image object.
         """
         return self.image.url
+        
 
 # DJANGO-SIGNALS FUNCTIONS
 @receiver(post_save, sender=Product)

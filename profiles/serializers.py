@@ -11,6 +11,9 @@ class ProfileSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(source='owner.first_name')
     last_name = serializers.CharField(source='owner.last_name')
     is_owner = serializers.SerializerMethodField()
+    products_count = serializers.ReadOnlyField()
+    ratings_count = serializers.ReadOnlyField()
+    comments_count = serializers.ReadOnlyField()
 
     def get_is_owner(self, obj):
         """
@@ -24,7 +27,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'owner', 'email', 'first_name', 'last_name',
             'phone_number', 'image', 'created_at', 'updated_at',
-            'is_owner',
+            'is_owner', 'products_count', 'ratings_count', 'comments_count',
         ]
 
     def update(self, instance, validated_data):
