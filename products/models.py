@@ -1,3 +1,4 @@
+from rest_framework.exceptions import APIException
 from django.db import models
 from django.conf import settings
 from django.db.models.signals import post_save, pre_save
@@ -67,9 +68,18 @@ class ProductImage(models.Model):
         String representation of Product's image object.
         """
         return self.image.url
-        
+
 
 # DJANGO-SIGNALS FUNCTIONS
+@receiver(pre_save, sender=Product)
+def reject_products(sender, instance, **kwargs):
+    """
+    Method raises Exception when saved picture exceeds the fifth allowed for the product.
+    """
+    if len(Product.objects.filter(owner=instance.owner)) >= 10:
+        raise APIException("Only 10 products allowed per user")
+
+
 @receiver(post_save, sender=Product)
 def create_image(sender, instance, created, **kwargs):
     """
@@ -85,7 +95,7 @@ def reject_pictures(sender, instance, **kwargs):
     Method raises Exception when saved picture exceeds the fifth allowed for the product.
     """
     if len(ProductImage.objects.filter(product=instance.product.id)) >= 5:
-        raise Exception("Only 5 pictures allowed for a product")
+        raise APIException("Only 5 pictures allowed for a product")
 
 @receiver(pre_save, sender=ProductImage)
 def delete_default(sender, instance, **kwargs):
