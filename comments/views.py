@@ -20,7 +20,7 @@ class CommentList(generics.ListCreateAPIView):
         DjangoFilterBackend,
     ]
     filterset_fields = [
-        'product_comments',
+        'product',
         'owner',
     ]
 

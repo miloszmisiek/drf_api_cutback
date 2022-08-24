@@ -18,7 +18,7 @@ class RatingsList(generics.ListCreateAPIView):
         DjangoFilterBackend,
     ]
     filterset_fields = [
-        'product_rating',
+        'product',
         'owner'
     ]
 

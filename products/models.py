@@ -1,5 +1,6 @@
 from rest_framework.exceptions import APIException
 from django.db import models
+# from django.contrib.gis.db.models import PointField
 from django.conf import settings
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
@@ -12,6 +13,15 @@ class ProductRatingManager(models.Manager):
             avg_score=models.Avg('product_rating__score'),
             all_scores=models.Count('product_rating__score')
             )
+
+# class Location(models.Model):
+#     """
+#     A model which holds information about a particular location
+#     """
+#     address = models.CharField(max_length=255)
+#     city = models.CharField(max_length=100)
+#     state = models.CharField(max_length=100)
+#     point = PointField()
 
 class Product(models.Model):
     """
@@ -38,6 +48,7 @@ class Product(models.Model):
     title = models.CharField(max_length=50, blank=False)
     description = models.TextField(max_length=500)
     brand = models.CharField(max_length=50)
+    # location = models.ForeignKey(Location, on_delete=models.CASCADE, null=True)
     inStock = models.BooleanField(blank=False, default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
