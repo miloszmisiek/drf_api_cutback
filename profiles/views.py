@@ -31,6 +31,13 @@ class ProfileList(generics.ListAPIView):
         'comments_count',
     ]
 
+    search_fields = [
+        'owner__username',
+        'owner__first_name',
+        'owner__last_name',
+        'owner__email',
+    ]
+
 
 class ProfileDetail(generics.RetrieveUpdateDestroyAPIView):
     """

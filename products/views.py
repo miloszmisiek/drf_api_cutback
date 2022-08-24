@@ -44,7 +44,8 @@ class ProductList(generics.ListCreateAPIView):
 
     filter_backends = [
         DjangoFilterBackend,
-        filters.OrderingFilter
+        filters.OrderingFilter,
+        filters.SearchFilter
     ]
     filterset_fields = [
         'owner',
@@ -56,6 +57,14 @@ class ProductList(generics.ListCreateAPIView):
         'price',
         'avg_score',
         'all_scores',
+        'title',
+        'created_at',
+    ]
+
+    search_fields = [
+        'owner__username', 
+        'title', 
+        'description'
     ]
 
 class ProductImages(generics.ListCreateAPIView):
