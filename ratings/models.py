@@ -16,7 +16,7 @@ class Rating(models.Model):
     )
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     product = models.ForeignKey(
-        Product, default=None, on_delete=models.CASCADE, related_name="product_rating"
+        Product, on_delete=models.CASCADE, related_name="product_rating"
     )
     score = models.PositiveSmallIntegerField(default=0, choices=RATE_CHOICES)
     created_at = models.DateTimeField(auto_now_add=True)

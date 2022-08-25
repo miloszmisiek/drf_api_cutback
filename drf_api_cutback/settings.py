@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'djmoney',
     'django_filters',
+    'django_countries',
 
     'profiles',
     'products',

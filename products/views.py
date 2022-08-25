@@ -13,29 +13,9 @@ class ProductList(generics.ListCreateAPIView):
     serializer_class = ProductSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     queryset = Product.objects.all()
+    # .annotate(**{f"score_count_{n}": Count('product_rating', filter=Q(product_rating__score=n), distinct=True) for n in range(len(Rating.RATE_CHOICES)+1)})
     # .annotate(
-    #     rate_count_dict=,
         # ratings_count=Count('product_rating', distinct=True),
-        # score_count_1=Count(
-        #     'product_rating', 
-        #     filter=Q(product_rating__score=1),
-        #     distinct=True),
-        # score_count_2=Count(
-        #     'product_rating', 
-        #     filter=Q(product_rating__score=2),
-        #     distinct=True),
-        # score_count_3=Count(
-        #     'product_rating', 
-        #     filter=Q(product_rating__score=3),
-        #     distinct=True),
-        # score_count_4=Count(
-        #     'product_rating', 
-        #     filter=Q(product_rating__score=4),
-        #     distinct=True),
-        # score_count_5=Count(
-        #     'product_rating', 
-        #     filter=Q(product_rating__score=5),
-        #     distinct=True),
         # score_avg=Avg('product_rating__score'),
     # ).order_by('-created_at')
 
