@@ -12,6 +12,7 @@ django-phonenumbers = "*"
 djangorestframework = "*"
 django-money = "*"
 django-filter = "*"
+django-countries = "*"
 
 [dev-packages]
 
