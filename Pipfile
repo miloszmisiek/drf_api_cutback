@@ -13,6 +13,8 @@ djangorestframework = "*"
 django-money = "*"
 django-filter = "*"
 django-countries = "*"
+dj-rest-auth = {extras = ["with_social"], version = "*"}
+djangorestframework-simplejwt = "*"
 
 [dev-packages]
 
