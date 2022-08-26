@@ -34,9 +34,9 @@ class Product(models.Model):
     )
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     category = models.IntegerField(choices=CATEGORIES, blank=False)
-    price = MoneyField(max_digits=10, decimal_places=2, null=True, 
-                        currency_choices=CURRENCY_CHOICES, 
-                        default_currency=None)
+    price = MoneyField(max_digits=10, decimal_places=2, blank=False,
+                        default=0, currency_choices=CURRENCY_CHOICES, 
+                        default_currency=CURRENCY_CHOICES[0][0])
     title = models.CharField(max_length=50, blank=False)
     description = models.TextField(max_length=500)
     brand = models.CharField(max_length=50)
