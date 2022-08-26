@@ -15,6 +15,10 @@ django-filter = "*"
 django-countries = "*"
 dj-rest-auth = {extras = ["with_social"], version = "*"}
 djangorestframework-simplejwt = "*"
+dj-database-url = "*"
+psycopg2 = "*"
+gunicorn = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 
