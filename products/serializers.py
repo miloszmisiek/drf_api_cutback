@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from djmoney.contrib.django_rest_framework import MoneyField
 from ratings.serializers import RatingSerializer
 from .models import Product, ProductImage, Location
 from ratings.models import Rating
@@ -18,8 +19,10 @@ class LocationSerializer(serializers.ModelSerializer):
         
 class ProductSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
+    is_owner = serializers.SerializerMethodField()
     category = serializers.ChoiceField(choices=Product.CATEGORIES)
     category_name = serializers.ReadOnlyField(source='get_category_display')
+    price = MoneyField(max_digits=10, decimal_places=2, required=True)
     price_currency = serializers.ChoiceField(choices=Product.CURRENCY_CHOICES)
     gallery = serializers.SerializerMethodField()
     scores = serializers.SerializerMethodField()
@@ -31,6 +34,13 @@ class ProductSerializer(serializers.ModelSerializer):
     # score_count_4 = serializers.ReadOnlyField()
     # score_count_5 = serializers.ReadOnlyField()
     # score_avg = serializers.ReadOnlyField()
+
+    def get_is_owner(self, obj):
+        """
+        Method checks if the current user is the owner of the product and returns boolean value.
+        """
+        request = self.context['request']
+        return request.user == obj.owner
 
     
     def get_gallery(self, product):
@@ -66,7 +76,7 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = (
-            'id', 'owner', 'category', 'category_name',
+            'id', 'owner', 'is_owner', 'category', 'category_name',
             'price','price_currency', 'title', 'description', 'brand',
             'inStock', 'created_at', 'updated_at', 'gallery', 'scores',
             'location',
