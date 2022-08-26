@@ -12,7 +12,6 @@ class ImageSerializer(serializers.ModelSerializer):
         fields = ('id', 'product','product_name', 'image' )
 
 class LocationSerializer(serializers.ModelSerializer):
-    # product_name = serializers.ReadOnlyField(source='product.title')
     class Meta:
         model = Location
         fields = ('id', 'address', 'city', 'country')
@@ -27,13 +26,6 @@ class ProductSerializer(serializers.ModelSerializer):
     gallery = serializers.SerializerMethodField()
     scores = serializers.SerializerMethodField()
     location = serializers.SerializerMethodField()
-
-    # ratings_count = serializers.ReadOnlyField()
-    # product_rating = serializers.ReadOnlyField()
-    # score_count_2 = serializers.ReadOnlyField()
-    # score_count_4 = serializers.ReadOnlyField()
-    # score_count_5 = serializers.ReadOnlyField()
-    # score_avg = serializers.ReadOnlyField()
 
     def get_is_owner(self, obj):
         """
@@ -70,8 +62,6 @@ class ProductSerializer(serializers.ModelSerializer):
     def get_location(self, product):
         return LocationSerializer(product.product_location.all(), many=True).data
     
-    # def get_category(self, category):
-    #     return category.get_category_display()
 
     class Meta:
         model = Product
