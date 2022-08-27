@@ -61,3 +61,6 @@ Manual testing implemented for the Back-End application listed below:
 | 6           | Rating owner change data and submits with `PUT` button | The updated rating detail view is rendered. Data is saved in the database. | Y |          |
 | 7           | Filters: User selects Rating in the field filters | List all ratings of the selected Rating  | Y |      |
 | 8           | Filters: User selects Owner in the field filters  | List all ratings with selected Owner | Y |          |
+| **Registration**     |                        |                  |      |             |
+
+
