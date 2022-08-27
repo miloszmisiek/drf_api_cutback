@@ -29,7 +29,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [(
-        'rest_framework.authentication.SessionAuthentication'
+        # 'rest_framework.authentication.SessionAuthentication'
+        'drf_api_cutback.authentication.CsrfExemptSessionAuthentication'
         if 'DEV' in os.environ
         else 'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
     )],
@@ -126,8 +127,8 @@ ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = True
 ACCOUNT_USERNAME_MIN_LENGTH = 4
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
-# LOGIN_URL = "/login/"
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+LOGIN_URL = "/api-auth/login/"
+LOGIN_REDIRECT_URL = '/'
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -217,3 +218,14 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+if 'DEV' in os.environ:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+else:
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    EMAIL_USE_TLS = True
+    EMAIL_PORT = 587
+    EMAIL_HOST = "smtp.gmail.com"
+    EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+    EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASS")
+    DEFAULT_FROM_EMAIL = os.environ.get("EMAIL_HOST_USER")

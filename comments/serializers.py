@@ -12,6 +12,7 @@ class CommentSerializer(serializers.ModelSerializer):
     is_owner = serializers.SerializerMethodField()
     profile_id = serializers.ReadOnlyField(source='owner.profile.id')
     profile_image = serializers.ReadOnlyField(source='owner.profile.image.url')
+    product_name = serializers.ReadOnlyField(source='product.title')
     created_at = serializers.SerializerMethodField()
     updated_at = serializers.SerializerMethodField()
 
@@ -29,7 +30,7 @@ class CommentSerializer(serializers.ModelSerializer):
         model = Comment
         fields = [
             'id', 'owner', 'is_owner', 'profile_id', 'profile_image',
-            'product', 'created_at', 'updated_at', 'content'
+            'product', 'product_name', 'created_at', 'updated_at', 'content'
         ]
 
 

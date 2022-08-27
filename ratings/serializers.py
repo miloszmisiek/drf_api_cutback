@@ -8,8 +8,13 @@ class RatingSerializer(serializers.ModelSerializer):
     Serilizer for Rating model.
     """
     owner = serializers.ReadOnlyField(source='owner.username')
+    is_owner = serializers.SerializerMethodField()
     product_name = serializers.ReadOnlyField(source='product.title')
     created_at = serializers.SerializerMethodField()
+
+    def get_is_owner(self, obj):
+        request = self.context['request']
+        return request.user == obj.owner
 
     def create(self, validated_data):
         # to avoid crashing server with 500 error
@@ -24,4 +29,8 @@ class RatingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Rating
-        fields = ('id', 'owner', 'product','product_name', 'score', 'created_at',)
+        fields = (
+            'id', 'owner', 'is_owner', 
+            'product','product_name', 
+            'score', 'created_at',
+        )
