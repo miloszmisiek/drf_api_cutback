@@ -2,7 +2,10 @@ from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import Rating
 from .serializers import RatingSerializer
-from drf_api_cutback.permissions import IsOwnerOrReadOnly, IsAuthenticatedOrReadOnly
+from drf_api_cutback.permissions import (
+    IsOwnerOrReadOnly,
+    IsAuthenticatedOrReadOnly
+)
 
 
 class RatingsList(generics.ListCreateAPIView):

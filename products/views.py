@@ -1,6 +1,9 @@
 from rest_framework import generics, filters
 from django_filters.rest_framework import DjangoFilterBackend
-from drf_api_cutback.permissions import IsOwnerOrReadOnly, IsAuthenticatedOrReadOnly
+from drf_api_cutback.permissions import (
+    IsOwnerOrReadOnly,
+    IsAuthenticatedOrReadOnly
+)
 from .models import Product, ProductImage
 from .serializers import ProductSerializer, ImageSerializer
 
@@ -14,11 +17,6 @@ class ProductList(generics.ListCreateAPIView):
     serializer_class = ProductSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = Product.objects.all()
-    # .annotate(**{f"score_count_{n}": Count('product_rating', filter=Q(product_rating__score=n), distinct=True) for n in range(len(Rating.RATE_CHOICES)+1)})
-    # .annotate(
-    # ratings_count=Count('product_rating', distinct=True),
-    # score_avg=Avg('product_rating__score'),
-    # ).order_by('-created_at')
 
     def perform_create(self, serializer):
         """
@@ -61,15 +59,12 @@ class ProductImages(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = ProductImage.objects.all()
 
-    # def perform_create(self, serializer):
-    #     print(self.request.image)
-    #     # serializer.save(product=self.request.product)
-
 
 class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
     """
     List specific Product by it's id.
-    The owner of the Product instance can update or delete the product from the database.
+    The owner of the Product instance can update or
+    delete the product from the database.
     """
     serializer_class = ProductSerializer
     permission_classes = [IsOwnerOrReadOnly]

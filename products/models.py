@@ -9,7 +9,8 @@ from djmoney.models.fields import MoneyField
 
 class ProductRatingManager(models.Manager):
     """
-    Custom model manager allowing for avg_score and all_scores to be avaialble globally.
+    Custom model manager allowing for avg_score
+    and all_scores to be avaialble globally.
     """
 
     def get_queryset(self):
@@ -47,7 +48,7 @@ class Product(models.Model):
     title = models.CharField(max_length=50, blank=False)
     description = models.TextField(max_length=500)
     brand = models.CharField(max_length=50)
-    inStock = models.BooleanField(blank=False, default=False)
+    in_stock = models.BooleanField(blank=False, default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -106,7 +107,8 @@ class Location(models.Model):
 @receiver(pre_save, sender=Product)
 def reject_products(sender, instance, **kwargs):
     """
-    Method raises Exception when saved picture exceeds the fifth allowed for the product.
+    Method raises Exception when saved picture
+    exceeds the fifth allowed for the product.
     """
     if len(Product.objects.filter(owner=instance.owner)) >= 10:
         raise APIException("Only 10 products allowed per user")
@@ -115,7 +117,7 @@ def reject_products(sender, instance, **kwargs):
 @receiver(post_save, sender=Product)
 def create_image(sender, instance, created, **kwargs):
     """
-    Method creates ProductImage instance with default image 
+    Method creates ProductImage instance with default image
     when post_save signal is received on Product instance creation.
     """
     if created and not ProductImage.objects.filter(product=instance):
@@ -125,7 +127,8 @@ def create_image(sender, instance, created, **kwargs):
 @receiver(pre_save, sender=ProductImage)
 def reject_pictures(sender, instance, **kwargs):
     """
-    Method raises Exception when saved picture exceeds the fifth allowed for the product.
+    Method raises Exception when saved picture
+    exceeds the fifth allowed for the product.
     """
     if len(ProductImage.objects.filter(product=instance.product.id)) >= 5:
         raise APIException("Only 5 pictures allowed for a product")
@@ -134,7 +137,7 @@ def reject_pictures(sender, instance, **kwargs):
 @receiver(pre_save, sender=ProductImage)
 def delete_default(sender, instance, **kwargs):
     """
-    Method deletes the default image only 
+    Method deletes the default image only
     when pre_save signal is received on ProductImage instance creation
     and default image exists as an instance's product key.
     """

@@ -27,8 +27,9 @@ class LocationSerializer(serializers.ModelSerializer):
 
 class ProductSerializer(serializers.ModelSerializer):
     """
-    Serializer for Product model. Handles nested serializers for ImageSerializer, 
-    RatingSerializer and LocationSerilizer. 
+    Serializer for Product model.
+    Handles nested serializers for ImageSerializer,
+    RatingSerializer and LocationSerilizer.
     """
     owner = serializers.ReadOnlyField(source='owner.username')
     is_owner = serializers.SerializerMethodField()
@@ -42,7 +43,8 @@ class ProductSerializer(serializers.ModelSerializer):
 
     def get_is_owner(self, obj):
         """
-        Method checks if the current user is the owner of the profile and returns boolean value.
+        Method checks if the current user is the owner of the profile
+        and returns boolean value.
         """
         request = self.context['request']
         return request.user == obj.owner
@@ -62,8 +64,10 @@ class ProductSerializer(serializers.ModelSerializer):
 
     def get_scores(self, product):
         """
-        Loops through RatingSerializer data and returns data object with RatingSerializer data 
-        and statistics object containing counters for data. Returns empty object for empty data.
+        Loops through RatingSerializer data and
+        returns data object with RatingSerializer data
+        and statistics object containing counters for data.
+        Returns empty object for empty data.
         """
         request = self.context['request']
         rating_data = RatingSerializer(

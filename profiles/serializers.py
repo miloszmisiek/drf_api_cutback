@@ -18,7 +18,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     def get_is_owner(self, obj):
         """
-        Method checks if the current user is the owner of the profile 
+        Method checks if the current user is the owner of the profile
         and returns boolean value.
         """
         request = self.context['request']

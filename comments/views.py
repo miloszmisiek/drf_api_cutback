@@ -1,6 +1,9 @@
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
-from drf_api_cutback.permissions import IsOwnerOrReadOnly, IsAuthenticatedOrReadOnly
+from drf_api_cutback.permissions import (
+    IsOwnerOrReadOnly,
+    IsAuthenticatedOrReadOnly
+)
 from .models import Comment
 from .serializers import CommentSerializer, CommentDetailSerializer
 
