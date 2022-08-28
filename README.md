@@ -1,4 +1,4 @@
-# Cutback: Django REST Framework API <!-- omit in toc -->
+# <center>Cutback: Django REST Framework API <!-- omit in toc --></center>
 
 ## **Contents**
 - [**Overview**](#overview)
@@ -415,4 +415,5 @@ In GitHub, you have the option to create a local copy (clone) of your repository
 
 [Back to contents](#contents)
 
-Copyright @ Milosz Misiek 2022
+---
+<p style="text-align: center;">Copyright @ Milosz Misiek 2022</p> <div style="text-align: center;"><a href="https://www.linkedin.com/in/milosz-misiek/"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" /></a></div>
