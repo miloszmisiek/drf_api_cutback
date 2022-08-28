@@ -62,5 +62,6 @@ Manual testing implemented for the Back-End application listed below:
 | 7           | Filters: User selects Rating in the field filters | List all ratings of the selected Rating  | Y |      |
 | 8           | Filters: User selects Owner in the field filters  | List all ratings with selected Owner | Y |          |
 | **Registration**     |                        |                  |      |             |
-
-
+| 1           | User clicks login button in the web browser DRF view | Login page renders with username and password fields to be filled | Y |          |
+| 2           | User enters dj-rest-auth registration URL | The dj-rest-auth registration page renders with registration form  | Y |          |
+| 3           | User fills all required fields for registration and clicks `POST` button | The form is submitted and email verification is send to user's email address  | Y |   Email verification is handled by all-auth library, `GET` method is not allowed       |

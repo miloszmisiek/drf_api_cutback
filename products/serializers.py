@@ -28,26 +28,35 @@ class ProductSerializer(serializers.ModelSerializer):
     location = serializers.SerializerMethodField()
 
     def get_is_owner(self, obj):
-        """
-        Method checks if the current user is the owner of the product and returns boolean value.
-        """
         request = self.context['request']
+        # print(request.user.email_verified)
         return request.user == obj.owner
 
     
     def get_gallery(self, product):
         return_list = []
-        gallery_data = ImageSerializer(product.product_images.all(), many=True).data
+        gallery_data = ImageSerializer(
+            product.product_images.all(), 
+            many=True).data
         for dict in gallery_data:
             for k,v in dict.items():
                 return_list.append(v) if k == "image" else None
         return return_list
     
     def get_scores(self, product):
-        rating_data = RatingSerializer(product.product_rating.all(), many=True).data
-        statistics = {f'score_count_{n}': 0 for n in range(1, len(Rating.RATE_CHOICES)+1)}
-        statistics["all_scores"] = Product.objects.get(pk=product.id).all_scores if not None else None
-        statistics["avg"] = Product.objects.get(pk=product.id).avg_score
+        request = self.context['request']
+        rating_data = RatingSerializer(
+            product.product_rating.all(), 
+            many=True,
+            context={'request': request}).data
+        statistics = {
+            f'score_count_{n}': 0 
+            for n in range(1, len(Rating.RATE_CHOICES)+1)
+        }
+        statistics["all_scores"] = Product.objects.get(
+            pk=product.id).all_scores if not None else None
+        statistics["avg"] = Product.objects.get(
+            pk=product.id).avg_score
         for dict in rating_data:
             for k,v in dict.items():
                 if k == 'score':
@@ -60,7 +69,9 @@ class ProductSerializer(serializers.ModelSerializer):
         return return_data if rating_data else {}
 
     def get_location(self, product):
-        return LocationSerializer(product.product_location.all(), many=True).data
+        return LocationSerializer(
+            product.product_location.all(), 
+            many=True).data
     
 
     class Meta:

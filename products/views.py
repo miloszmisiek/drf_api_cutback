@@ -3,6 +3,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from drf_api_cutback.permissions import IsOwnerOrReadOnly
 from .models import Product, ProductImage
 from .serializers import ProductSerializer, ImageSerializer
+from drf_api_cutback.permissions import IsAuthenticatedOrReadOnly
 
 class ProductList(generics.ListCreateAPIView):
     """
@@ -11,7 +12,7 @@ class ProductList(generics.ListCreateAPIView):
     Create method saves current user as owner.
     """
     serializer_class = ProductSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = Product.objects.all()
     # .annotate(**{f"score_count_{n}": Count('product_rating', filter=Q(product_rating__score=n), distinct=True) for n in range(len(Rating.RATE_CHOICES)+1)})
     # .annotate(

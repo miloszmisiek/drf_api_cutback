@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractUser
 from phonenumber_field.modelfields import PhoneNumberField
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
+from allauth.account.signals import email_confirmed
 
 
 class User(AbstractUser):
@@ -13,6 +14,7 @@ class User(AbstractUser):
     email = models.EmailField(max_length=50, unique=True, blank=False)
     first_name = models.CharField(max_length=50, blank=False)
     last_name = models.CharField(max_length=50, blank=False)
+    email_verified = models.BooleanField(default=False)
 
     def __str__(self):
         """
@@ -60,3 +62,10 @@ def delete_profile(sender, instance, **kwargs):
     Method deletes user on Profile deletion.
     """
     User.objects.get(pk=instance.owner.id).delete()
+
+@receiver(email_confirmed)
+def email_confirmed_(request, email_address, **kwargs):
+    user = email_address.user
+    print(user)
+    user.email_verified = True
+    user.save()
