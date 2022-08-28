@@ -291,8 +291,8 @@ All bugs were resolved in the development process. Any worth-mentioning bugs are
 [Back to contents](#contents)
 
 # **Deployment**
-## Using Heroku to deploy the project
-- Setup of the local workspace:
+
+- **Setup of the local workspace:**
   - This project was developed with the use of [pipenv](https://pypi.org/project/pipenv/) to handle all dependencies
   - Managing a `requirements.txt` file can be problematic, so Pipenv uses the upcoming `Pipfile` and `Pipfile.lock` instead, which is superior for basic use cases.
   - Create a `Procfile` in the local workspace and type in `release: python manage.py makemigrations && python manage.py migrate` to allow for migration every time a new version is deployed and `web: gunicorn <name app>.wsgi:application` inside the file.
@@ -311,7 +311,8 @@ This project uses [Cloudinary](https://cloudinary.com/) to host all static files
 
     In `env.py` the Cloudinary API key is stored for security reasons.
 ---
-This project was deployed using [Heroku](https://dashboard.heroku.com/) using the following steps:
+## Using Heroku to deploy the project
+This project was deployed using [Heroku](https://dashboard.heroku.com/) with the following steps:
 
 1. Click on *New* in the top-right corner and then *Create New App*.
 
