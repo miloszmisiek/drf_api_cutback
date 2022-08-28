@@ -1,9 +1,29 @@
-# Cutback: Django REST Framework API
+# Cutback: Django REST Framework API <!-- omit in toc -->
 
-## Overview
+## **Contents**
+- [**Overview**](#overview)
+- [**Technologies Used**](#technologies-used)
+- [**Testing**](#testing)
+  - [Manual Testing](#manual-testing)
+  - [PEP8 Validation](#pep8-validation)
+  - [Bugs](#bugs)
+    - [Known Bugs](#known-bugs)
+    - [Solved Bugs](#solved-bugs)
+- [**Information Architecture**](#information-architecture)
+    - [Database](#database)
+    - [Entity-Relationship Diagram](#entity-relationship-diagram)
+    - [Data Modeling](#data-modeling)
+- [**Deployment**](#deployment)
+  - [Using Heroku to deploy the project](#using-heroku-to-deploy-the-project)
+  - [Fork a repository](#fork-a-repository)
+  - [Clone a repository](#clone-a-repository)
+- [**Credits**](#credits)
+  - [Acknowledgments](#acknowledgments)
+
+# **Overview**
 This repository serves as Cutback Backend REST API. It's purpose is to provide data to be used in Front-End design with React.js. For main project's documentation refer to [Cutback](https://github.com/miloszmisiek/ci-p5-cutback) project.
 
-## Technologies Used
+# **Technologies Used**
 - ### Languages
     + [Python 3.9.12](https://www.python.org/downloads/release/python-3912/): the primary language used to develop the server-side of the website.
 - ### Frameworks:
@@ -38,7 +58,7 @@ This repository serves as Cutback Backend REST API. It's purpose is to provide d
 
 [Back to contents](#contents)
 
-# Testing
+# **Testing**
 ## Manual Testing
 
 Manual testing implemented for the Back-End application listed below:
@@ -119,7 +139,19 @@ The only code which was left with long-lines prompts is `settings.py` for code f
 
 ![pep8validation](https://res.cloudinary.com/milo-milo/image/upload/v1661700566/pep8_validation_rtcuca.png)
 
-## Information Architecture
+## Bugs
+All bugs were resolved in the development process. Any worth mentoning bugs are documented in the project's GitHub issues panel.
+
+### Known Bugs
+1. MoneyField object returned in the field after validation error: [open](https://stackoverflow.com/questions/73505226/django-rest-framework-form-field-populated-with-object-representation-after-val).
+
+### Solved Bugs
+1. Custom "update" method in ProfileSerializer: [open](https://github.com/miloszmisiek/drf_api_cutback/issues/3).
+2. Choice name display in Product Serializer get endpoint: [open](https://github.com/miloszmisiek/drf_api_cutback/issues/5).
+
+[Back to contents](#contents)
+
+# **Information Architecture**
 ### Database
 - The deployed version of the application uses PostgreSQL as a database.
 - SQLite was used for development version.
@@ -258,7 +290,7 @@ The only code which was left with long-lines prompts is `settings.py` for code f
 
 [Back to contents](#contents)
 
-# Deployment
+# **Deployment**
 ## Using Heroku to deploy the project
 - Setup of the local workspace:
   - This project was developed with the use of [pipenv](https://pypi.org/project/pipenv/) to handle all dependencies
@@ -369,7 +401,17 @@ In GitHub, you have the option to create a local copy (clone) of your repository
 [Back to contents](#contents)
 
 
-# Credits
+# **Credits**
 1. Project setup is based on [Code Institute](https://codeinstitute.net) tutorail video Django REST Framework.
 2. The Comment app is copied from [Code Institute](https://codeinstitute.net) tutorail video Django REST Framework and adjusted for the Cutback needs.
 3. Email confirmation functionality inspired from [Stack Overflow](https://stackoverflow.com/questions/24809505/django-allauth-how-to-properly-use-email-confirmed-signal-to-set-user-to-active).
+4. Deployment section is based on the owner's previous project [OneTeam](https://github.com/miloszmisiek/ci-pp4-one_team).
+
+## Acknowledgments
+1. My family for being my biggest supporters throughout the entire time!
+3. My mentor [Samantha Dartnall](https://www.linkedin.com/in/samantha-dartnall/) for guidance and support on the project.
+4. [Stack Overflow](https://stackoverflow.com/) community for the best bug solving space ever created!
+
+[Back to contents](#contents)
+
+Copyright @ Milosz Misiek 2022
