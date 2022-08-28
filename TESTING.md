@@ -65,3 +65,7 @@ Manual testing implemented for the Back-End application listed below:
 | 1           | User clicks login button in the web browser DRF view | Login page renders with username and password fields to be filled | Y |          |
 | 2           | User enters dj-rest-auth registration URL | The dj-rest-auth registration page renders with registration form  | Y |          |
 | 3           | User fills all required fields for registration and clicks `POST` button | The form is submitted and email verification is send to user's email address  | Y |   Email verification is handled by all-auth library, `GET` method is not allowed       |
+| 4           | User did not fill all required fields for registration and clicks `POST` button | The form is rejected and user is prompted which fields are required for registration.  | Y |      |
+| 5           | User did not confirm his email address and logs in | User has Read-Only functionality - only `GET` function is allowed  | Y |     |
+| 6           | User confirmed his email address and logs in | User has full functionality including `POST`, `PUT` and `DELETE`  | Y |     |
+| 7           | User confirmed his email address and logs in | User has full functionality  | Y |     |

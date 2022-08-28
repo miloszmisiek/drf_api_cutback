@@ -18,7 +18,8 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     def get_is_owner(self, obj):
         """
-        Method checks if the current user is the owner of the profile and returns boolean value.
+        Method checks if the current user is the owner of the profile 
+        and returns boolean value.
         """
         request = self.context['request']
         return request.user == obj.owner
@@ -38,11 +39,12 @@ class ProfileSerializer(serializers.ModelSerializer):
         # saving User instances
         owner_data = validated_data.pop('owner')
         owner = instance.owner
-        for k,v in owner_data.items():
+        for k, v in owner_data.items():
             setattr(owner, k, v)
         owner.save()
-        #saving Profile instances
-        instance.phone_number = validated_data.get('phone_number', instance.phone_number)
+        # saving Profile instances
+        instance.phone_number = validated_data.get(
+            'phone_number', instance.phone_number)
         instance.image = validated_data.get('image', instance.image)
         instance.save()
 

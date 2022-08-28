@@ -14,7 +14,8 @@ class Rating(models.Model):
         (2, "poor"),
         (1, "bad"),
     )
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL,
+                              on_delete=models.CASCADE)
     product = models.ForeignKey(
         Product, on_delete=models.CASCADE, related_name="product_rating"
     )

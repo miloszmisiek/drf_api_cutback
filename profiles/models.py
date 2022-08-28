@@ -21,12 +21,14 @@ class User(AbstractUser):
         Returns string representation of owner's username.
         """
         return self.username
-    
+
+
 class Profile(models.Model):
     """
     The Profile model with One to One realtionship to User model.
     """
-    owner = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    owner = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     image = models.ImageField(
@@ -43,10 +45,6 @@ class Profile(models.Model):
         """
         return f"{self.owner.username}'s profile"
 
-    # this solution saves email as username when user is saved
-    # def save(self, *args, **kwargs): 
-    #     self.username = self.email
-    #     return super().save(*args, **kwargs)
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_profile(sender, instance, created, **kwargs):
@@ -56,6 +54,7 @@ def create_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(owner=instance)
 
+
 @receiver(post_delete, sender=Profile)
 def delete_profile(sender, instance, **kwargs):
     """
@@ -63,8 +62,13 @@ def delete_profile(sender, instance, **kwargs):
     """
     User.objects.get(pk=instance.owner.id).delete()
 
+
 @receiver(email_confirmed)
 def email_confirmed_(request, email_address, **kwargs):
+    """
+    Signal tracks user's email confirmation and sets email_verified
+    to True if confirmed.
+    """
     user = email_address.user
     print(user)
     user.email_verified = True

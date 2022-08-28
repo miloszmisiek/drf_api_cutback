@@ -1,8 +1,9 @@
-from rest_framework import generics, permissions
+from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import Rating
 from .serializers import RatingSerializer
-from drf_api_cutback.permissions import IsOwnerOrReadOnly
+from drf_api_cutback.permissions import IsOwnerOrReadOnly, IsAuthenticatedOrReadOnly
+
 
 class RatingsList(generics.ListCreateAPIView):
     """
@@ -11,7 +12,7 @@ class RatingsList(generics.ListCreateAPIView):
     """
 
     serializer_class = RatingSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = Rating.objects.all()
 
     def perform_create(self, serializer):
@@ -24,6 +25,7 @@ class RatingsList(generics.ListCreateAPIView):
         'product',
         'owner'
     ]
+
 
 class RatingDetail(generics.RetrieveDestroyAPIView):
     """

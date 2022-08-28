@@ -1,12 +1,19 @@
 from rest_framework import permissions
-from allauth.account.admin import EmailAddress
 
 
 class IsOwnerOrReadOnly(permissions.BasePermission):
-  def has_object_permission(self, request, view, obj):
-    if request.method in permissions.SAFE_METHODS:
-      return True
-    return obj.owner == request.user
+    """
+    Custom permission to handle app functionality for owners.
+    """
+
+    def has_object_permission(self, request, view, obj):
+        """
+        The request is authenticated as an owner, or is a read-only request.
+        """
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        return obj.owner == request.user
+
 
 class IsAuthenticatedOrReadOnly(permissions.BasePermission):
     """

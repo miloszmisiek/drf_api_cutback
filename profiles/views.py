@@ -5,6 +5,7 @@ from .models import Profile
 from .serializers import ProfileSerializer
 from drf_api_cutback.permissions import IsOwnerOrReadOnly
 
+
 class ProfileList(generics.ListAPIView):
     """
     List all profiles

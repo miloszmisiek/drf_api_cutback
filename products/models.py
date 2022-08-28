@@ -8,13 +8,20 @@ from djmoney.models.fields import MoneyField
 
 
 class ProductRatingManager(models.Manager):
+    """
+    Custom model manager allowing for avg_score and all_scores to be avaialble globally.
+    """
+
     def get_queryset(self):
+        """
+        Returns queryset annotated with avg_score and all_scores fields.
+        """
         return super(ProductRatingManager, self).get_queryset().annotate(
             avg_score=models.Avg('product_rating__score'),
             all_scores=models.Count('product_rating__score')
-            )
-    
-    
+        )
+
+
 class Product(models.Model):
     """
     Model for Product object in the database.
@@ -32,17 +39,18 @@ class Product(models.Model):
         ('GBP', 'GBP'),
         ('PLN', 'PLN')
     )
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL,
+                              on_delete=models.CASCADE)
     category = models.IntegerField(choices=CATEGORIES, blank=False)
     price = MoneyField(max_digits=10, decimal_places=2, blank=False,
-                        currency_choices=CURRENCY_CHOICES)
+                       currency_choices=CURRENCY_CHOICES)
     title = models.CharField(max_length=50, blank=False)
     description = models.TextField(max_length=500)
     brand = models.CharField(max_length=50)
     inStock = models.BooleanField(blank=False, default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
+
     # get access to avg_score and all_scores fields
     objects = ProductRatingManager()
 
@@ -58,7 +66,9 @@ class ProductImage(models.Model):
     Model for Product image object in the database.
     """
     product = models.ForeignKey(
-        Product, default=None, on_delete=models.CASCADE, related_name="product_images"
+        Product, default=None,
+        on_delete=models.CASCADE,
+        related_name="product_images"
     )
     image = models.ImageField(
         upload_to='images/', default='../default-image_aqtoyb'
@@ -70,6 +80,7 @@ class ProductImage(models.Model):
         """
         return self.image.url
 
+
 class Location(models.Model):
     """
     A model which holds information about a particular location
@@ -78,7 +89,10 @@ class Location(models.Model):
     city = models.CharField(max_length=50)
     country = CountryField(blank_label='(select country)')
     product = models.ForeignKey(
-        Product, default=None, on_delete=models.CASCADE, related_name="product_location"
+        Product,
+        default=None,
+        on_delete=models.CASCADE,
+        related_name="product_location"
     )
 
     def __str__(self):
@@ -107,6 +121,7 @@ def create_image(sender, instance, created, **kwargs):
     if created and not ProductImage.objects.filter(product=instance):
         ProductImage.objects.create(product=instance)
 
+
 @receiver(pre_save, sender=ProductImage)
 def reject_pictures(sender, instance, **kwargs):
     """
@@ -114,6 +129,7 @@ def reject_pictures(sender, instance, **kwargs):
     """
     if len(ProductImage.objects.filter(product=instance.product.id)) >= 5:
         raise APIException("Only 5 pictures allowed for a product")
+
 
 @receiver(pre_save, sender=ProductImage)
 def delete_default(sender, instance, **kwargs):

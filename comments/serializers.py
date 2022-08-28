@@ -17,13 +17,22 @@ class CommentSerializer(serializers.ModelSerializer):
     updated_at = serializers.SerializerMethodField()
 
     def get_is_owner(self, obj):
+        """
+        Method checks if the current user is the owner of the profile and returns boolean value.
+        """
         request = self.context['request']
         return request.user == obj.owner
 
     def get_created_at(self, obj):
+        """
+        Returns instance's created_at field as naturaltime format.
+        """
         return naturaltime(obj.created_at)
 
     def get_updated_at(self, obj):
+        """
+        Returns instance's updated_at field as naturaltime format.
+        """
         return naturaltime(obj.updated_at)
 
     class Meta:
