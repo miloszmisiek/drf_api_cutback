@@ -416,4 +416,9 @@ In GitHub, you have the option to create a local copy (clone) of your repository
 [Back to contents](#contents)
 
 ---
-<p style="text-align: center;">Copyright @ Milosz Misiek 2022</p> <div style="text-align: center;"><a href="https://www.linkedin.com/in/milosz-misiek/"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" /></a></div>
+<p style="text-align: center;">Copyright @ Milosz Misiek 2022</p> 
+<div style="text-align: center;">
+    <a href="https://www.linkedin.com/in/milosz-misiek/" target="_blank">
+        <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" />
+    </a>
+</div>
