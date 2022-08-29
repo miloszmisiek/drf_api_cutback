@@ -172,17 +172,7 @@ All bugs were resolved in the development process. Any worth-mentioning bugs are
 | Last Name     | last_name     | CharField     | max_length=50, blank=False    |
 | Email Verified          | email_verified         | BooleanField  | default=False    |
 
-```Python
-    # Roles to assign to users
-    ROLES = [
-        (0, 'Master'),
-        (1, 'Senior Officer'),
-        (2, 'Junior Officer'),
-        (3, 'Bosun'),
-    ]
-```
-
-2. **Profile**
+1. **Profile**
 
   Designed as a custom model inheriting from Django models.Model. This model is a helper model for the User. Creates profile for User instance with OneToOne relationship.
   - django-signals handles creation and deletion of profiles - when the user completes registration, profiles are automatically generated; when the user deletes his profile, his account is deleted as well.
