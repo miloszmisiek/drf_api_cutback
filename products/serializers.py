@@ -106,6 +106,6 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = (
             'id', 'owner', 'is_owner', 'category', 'category_name',
             'price', 'price_currency', 'title', 'description', 'brand',
-            'inStock', 'created_at', 'updated_at', 'gallery', 'scores',
+            'in_stock', 'created_at', 'updated_at', 'gallery', 'scores',
             'location',
         )

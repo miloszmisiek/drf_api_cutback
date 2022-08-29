@@ -31,7 +31,7 @@ class ProductList(generics.ListCreateAPIView):
     ]
     filterset_fields = [
         'owner',
-        'inStock',
+        'in_stock',
         'category',
         'brand',
     ]
