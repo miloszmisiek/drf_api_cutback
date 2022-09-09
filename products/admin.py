@@ -1,16 +1,15 @@
 from django.contrib import admin
-from .models import Product, ProductImage, Location
+from .models import Product, ProductImage
 
 
 class ProductImageAdmin(admin.StackedInline):
     model = ProductImage
 
-class LocationAdmin(admin.StackedInline):
-    model = Location
+
  
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    inlines = [ProductImageAdmin, LocationAdmin]
+    inlines = [ProductImageAdmin]
  
     class Meta:
        model = Product
@@ -19,6 +18,3 @@ class ProductAdmin(admin.ModelAdmin):
 class ProductImageAdmin(admin.ModelAdmin):
     pass
 
-@admin.register(Location)
-class LocationAdmin(admin.ModelAdmin):
-    pass

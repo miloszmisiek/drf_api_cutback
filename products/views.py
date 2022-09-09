@@ -34,6 +34,9 @@ class ProductList(generics.ListCreateAPIView):
         'in_stock',
         'category',
         'brand',
+        'country',
+        'city'
+        
     ]
     ordering_fields = [
         'price',
@@ -41,12 +44,16 @@ class ProductList(generics.ListCreateAPIView):
         'all_scores',
         'title',
         'created_at',
+        'country'
     ]
 
     search_fields = [
         'owner__username',
         'title',
-        'description'
+        'description',
+        'street',
+        'city',
+        'country'
     ]
 
 

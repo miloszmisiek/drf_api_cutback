@@ -49,6 +49,9 @@ class Product(models.Model):
     description = models.TextField(max_length=500)
     brand = models.CharField(max_length=50)
     in_stock = models.BooleanField(blank=False, default=False)
+    street = models.CharField(max_length=100)
+    city = models.CharField(max_length=50)
+    country = CountryField(blank_label='(select country)')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -80,27 +83,6 @@ class ProductImage(models.Model):
         String representation of Product's image object.
         """
         return self.image.url
-
-
-class Location(models.Model):
-    """
-    A model which holds information about a particular location
-    """
-    address = models.CharField(max_length=100)
-    city = models.CharField(max_length=50)
-    country = CountryField(blank_label='(select country)')
-    product = models.ForeignKey(
-        Product,
-        default=None,
-        on_delete=models.CASCADE,
-        related_name="product_location"
-    )
-
-    def __str__(self):
-        """
-        String representation of Product's image object.
-        """
-        return f"{self.product}'s location"
 
 
 # DJANGO-SIGNALS FUNCTIONS

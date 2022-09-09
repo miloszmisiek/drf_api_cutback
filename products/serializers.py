@@ -1,7 +1,9 @@
+from django_countries.serializer_fields import CountryField
+from django_countries.serializers import CountryFieldMixin
 from rest_framework import serializers
 from djmoney.contrib.django_rest_framework import MoneyField
 from ratings.serializers import RatingSerializer
-from .models import Product, ProductImage, Location
+from .models import Product, ProductImage
 from ratings.models import Rating
 
 
@@ -16,20 +18,11 @@ class ImageSerializer(serializers.ModelSerializer):
         fields = ('id', 'product', 'product_name', 'image')
 
 
-class LocationSerializer(serializers.ModelSerializer):
-    """
-    Serializer for Location model.
-    """
-    class Meta:
-        model = Location
-        fields = ('id', 'address', 'city', 'country')
-
-
-class ProductSerializer(serializers.ModelSerializer):
+class ProductSerializer(CountryFieldMixin, serializers.ModelSerializer):
     """
     Serializer for Product model.
     Handles nested serializers for ImageSerializer,
-    RatingSerializer and LocationSerilizer.
+    RatingSerializer.
     """
     owner = serializers.ReadOnlyField(source='owner.username')
     is_owner = serializers.SerializerMethodField()
@@ -39,7 +32,7 @@ class ProductSerializer(serializers.ModelSerializer):
     price_currency = serializers.ChoiceField(choices=Product.CURRENCY_CHOICES)
     gallery = serializers.SerializerMethodField()
     scores = serializers.SerializerMethodField()
-    location = serializers.SerializerMethodField()
+    country = CountryField(name_only=True)
 
     def get_is_owner(self, obj):
         """
@@ -93,19 +86,10 @@ class ProductSerializer(serializers.ModelSerializer):
 
         return return_data if rating_data else {}
 
-    def get_location(self, product):
-        """
-        Returns LocationSerializer data.
-        """
-        return LocationSerializer(
-            product.product_location.all(),
-            many=True).data
-
     class Meta:
         model = Product
         fields = (
             'id', 'owner', 'is_owner', 'category', 'category_name',
             'price', 'price_currency', 'title', 'description', 'brand',
-            'in_stock', 'created_at', 'updated_at', 'gallery', 'scores',
-            'location',
+            'in_stock', 'street', 'city', 'country', 'created_at', 'updated_at', 'gallery', 'scores',
         )
