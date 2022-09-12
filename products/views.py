@@ -79,20 +79,27 @@ class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
 
 
-class CategoriesView(generics.GenericAPIView):
+class ProductChoicesView(generics.GenericAPIView):
     """
-    List all Categories from Product model.
+    List categories and currencies choices for Product model.
     """
 
+    def append_key_value_pairs(self, choices):
+        """
+        Iterate over choices and return list of choice's objects
+        """
+        return_list = []
+        for i in choices:
+            key, value = i
+            obj = {"key": key, "value": value}
+            return_list.append(obj)
+        return return_list
+
     def get(self, request):
-        result_list = []
         try:
-            for i in Product.CATEGORIES:
-                key, value = i
-                obj = {"key": key, "value": value}
-                result_list.append(obj)
             return_dict = {
-                "CATEGORIES": result_list,
+                "CATEGORIES": self.append_key_value_pairs(Product.CATEGORIES),
+                "CURRENCIES": self.append_key_value_pairs(Product.CURRENCY_CHOICES),
             }
             return Response(return_dict, status=status.HTTP_200_OK)
         except:
