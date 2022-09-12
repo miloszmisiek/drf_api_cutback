@@ -35,10 +35,10 @@ class Product(models.Model):
         (4, "Others"),
     )
     CURRENCY_CHOICES = (
-        ('EUR', 'EUR'),
-        ('USD', 'USD'),
-        ('GBP', 'GBP'),
-        ('PLN', 'PLN')
+        ('EUR', u'\u20ac'),
+        ('USD', u'\u0024'),
+        ('GBP', u'\u00a3'),
+        ('PLN', 'z' + u'\u0142'),
     )
     owner = models.ForeignKey(settings.AUTH_USER_MODEL,
                               on_delete=models.CASCADE)
