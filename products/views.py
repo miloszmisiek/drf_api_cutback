@@ -1,4 +1,5 @@
-from rest_framework import generics, filters
+from rest_framework import generics, filters, status
+from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_api_cutback.permissions import (
     IsOwnerOrReadOnly,
@@ -36,7 +37,7 @@ class ProductList(generics.ListCreateAPIView):
         'brand',
         'country',
         'city'
-        
+
     ]
     ordering_fields = [
         'price',
@@ -76,3 +77,23 @@ class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ProductSerializer
     permission_classes = [IsOwnerOrReadOnly]
     queryset = Product.objects.all()
+
+
+class CategoriesView(generics.GenericAPIView):
+    """
+    List all Categories from Product model.
+    """
+
+    def get(self, request):
+        result_list = []
+        try:
+            for i in Product.CATEGORIES:
+                key, value = i
+                obj = {"key": key, "value": value}
+                result_list.append(obj)
+            return_dict = {
+                "CATEGORIES": result_list,
+            }
+            return Response(return_dict, status=status.HTTP_200_OK)
+        except:
+            return Response({"Error": "Empty or invalid categories choices"}, status=status.HTTP_400_BAD_REQUEST)
