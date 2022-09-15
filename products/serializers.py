@@ -26,13 +26,13 @@ class ProductSerializer(CountryFieldMixin, serializers.ModelSerializer):
     """
     owner = serializers.ReadOnlyField(source='owner.username')
     is_owner = serializers.SerializerMethodField()
-    category = serializers.ChoiceField(choices=Product.CATEGORIES)
+    # category = serializers.ChoiceField(choices=Product.CATEGORIES)
     category_name = serializers.ReadOnlyField(source='get_category_display')
     price = MoneyField(max_digits=10, decimal_places=2, required=True)
     price_currency = serializers.ChoiceField(choices=Product.CURRENCY_CHOICES)
     gallery = serializers.SerializerMethodField()
     scores = serializers.SerializerMethodField()
-    country = CountryField(name_only=True)
+    country = CountryField(country_dict=True)
 
     def get_is_owner(self, obj):
         """
@@ -46,14 +46,9 @@ class ProductSerializer(CountryFieldMixin, serializers.ModelSerializer):
         """
         Loops through ImageSerializer data and returns list of images as URLs.
         """
-        return_list = []
-        gallery_data = ImageSerializer(
+        return ImageSerializer(
             product.product_images.all(),
             many=True).data
-        for dict in gallery_data:
-            for k, v in dict.items():
-                return_list.append(v) if k == "image" else None
-        return return_list
 
     def get_scores(self, product):
         """
