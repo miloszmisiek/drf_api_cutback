@@ -86,7 +86,7 @@ class ProductImagesDetail(generics.RetrieveUpdateDestroyAPIView):
     delete the product from the database.
     """
     serializer_class = ImageSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsOwnerOrReadOnly]
     queryset = ProductImage.objects.all()
 
 

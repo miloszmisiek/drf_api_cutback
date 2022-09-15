@@ -69,6 +69,8 @@ class ProductImage(models.Model):
     """
     Model for Product image object in the database.
     """
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL,
+                              on_delete=models.CASCADE)
     product = models.ForeignKey(
         Product, default=None,
         on_delete=models.CASCADE,
@@ -112,7 +114,7 @@ def reject_pictures(sender, instance, **kwargs):
     Method raises Exception when saved picture
     exceeds the fifth allowed for the product.
     """
-    if len(ProductImage.objects.filter(product=instance.product.id)) >= 5:
+    if len(ProductImage.objects.filter(product=instance.product.id)) > 5:
         raise APIException("Only 5 pictures allowed for a product")
 
 

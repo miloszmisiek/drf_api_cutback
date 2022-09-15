@@ -11,11 +11,22 @@ class ImageSerializer(serializers.ModelSerializer):
     """
     Serializer for ProductImage model. Product title added for clarity.
     """
+    owner = serializers.ReadOnlyField(source='owner.username')
     product_name = serializers.ReadOnlyField(source='product.title')
+    is_owner = serializers.SerializerMethodField()
+
+    def get_is_owner(self, obj):
+        """
+        Method checks if the current user is the owner of the Image
+        and returns boolean value.
+        """
+        request = self.context['request']
+        return request.user == obj.owner
 
     class Meta:
         model = ProductImage
-        fields = ('id', 'product', 'product_name', 'image')
+        fields = ('id', 'owner', 'is_owner',
+                  'product', 'product_name', 'image')
 
 
 class ProductSerializer(CountryFieldMixin, serializers.ModelSerializer):
@@ -46,9 +57,10 @@ class ProductSerializer(CountryFieldMixin, serializers.ModelSerializer):
         """
         Loops through ImageSerializer data and returns list of images as URLs.
         """
+        request = self.context['request']
         return ImageSerializer(
             product.product_images.all(),
-            many=True).data
+            many=True, context={'request': request}).data
 
     def get_scores(self, product):
         """
