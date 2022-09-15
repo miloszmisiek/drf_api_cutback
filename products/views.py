@@ -79,6 +79,17 @@ class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
 
 
+class ProductImagesDetail(generics.RetrieveUpdateDestroyAPIView):
+    """
+    List specific Product image by it's id.
+    The owner of the Product image instance can update or
+    delete the product from the database.
+    """
+    serializer_class = ImageSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    queryset = ProductImage.objects.all()
+
+
 class ProductChoicesView(generics.GenericAPIView):
     """
     List categories and currencies choices for Product model.
