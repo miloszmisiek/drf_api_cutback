@@ -63,10 +63,16 @@ class ProductImages(generics.ListCreateAPIView):
     List all Products images.
     Authenticated users can create new instances of Products images.
     """
+    
     serializer_class = ImageSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = ProductImage.objects.all()
 
+    def perform_create(self, serializer):
+        """
+        Saves owner as a current user.
+        """
+        serializer.save(owner=self.request.user)
 
 class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
     """
