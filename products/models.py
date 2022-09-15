@@ -105,7 +105,7 @@ def create_image(sender, instance, created, **kwargs):
     when post_save signal is received on Product instance creation.
     """
     if created and not ProductImage.objects.filter(product=instance):
-        ProductImage.objects.create(product=instance)
+        ProductImage.objects.create(product=instance, owner=instance.owner)
 
 
 @receiver(pre_save, sender=ProductImage)
