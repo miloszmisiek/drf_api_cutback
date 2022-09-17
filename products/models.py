@@ -126,10 +126,18 @@ def delete_default(sender, instance, **kwargs):
     and default image exists as an instance's product key.
     """
     default_image = "../default-image_aqtoyb"
-    ProductImage.objects.filter(
-        product=instance.product.id,
-        image=default_image
-    ).delete() if ProductImage.objects.filter(
-        product=instance.product.id,
-        image=default_image
-    ) else None
+    try:
+        if ProductImage.objects.filter(product=instance.product.id, image=default_image):
+            ProductImage.objects.filter(
+                product=instance.product.id, image=default_image).delete()
+    except:
+        raise APIException("Something went wrong, product instance has no image.")
+
+
+    # ProductImage.objects.filter(
+    #     product=instance.product.id,
+    #     image=default_image
+    # ).delete() if ProductImage.objects.filter(
+    #     product=instance.product.id,
+    #     image=default_image
+    # ) else None
