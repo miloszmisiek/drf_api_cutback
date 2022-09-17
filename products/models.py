@@ -58,6 +58,10 @@ class Product(models.Model):
     # get access to avg_score and all_scores fields
     objects = ProductRatingManager()
 
+    
+    class Meta:
+        ordering = ['-created_at']
+
     def __str__(self):
         """
         String representation of Product object.
@@ -80,11 +84,18 @@ class ProductImage(models.Model):
         upload_to='images/', default='../default_gkffon'
     )
 
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-created_at']
+    
     def __str__(self):
         """
         String representation of Product's image object.
         """
         return self.image.url
+    
 
 
 # DJANGO-SIGNALS FUNCTIONS
@@ -125,7 +136,7 @@ def delete_default(sender, instance, **kwargs):
     when pre_save signal is received on ProductImage instance creation
     and default image exists as an instance's product key.
     """
-    default_image = "../default-image_aqtoyb"
+    default_image = "../default_gkffon"
     if ProductImage.objects.filter(product=instance.product.id, image=default_image):
         ProductImage.objects.filter(
             product=instance.product.id, image=default_image).delete()

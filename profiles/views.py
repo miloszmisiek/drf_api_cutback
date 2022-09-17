@@ -16,7 +16,7 @@ class ProfileList(generics.ListAPIView):
         products_count=Count('owner__product', distinct=True),
         ratings_count=Count('owner__rating', distinct=True),
         comments_count=Count('owner__comment', distinct=True)
-    )
+    ).order_by('-created_at')
 
     filter_backends = [
         filters.OrderingFilter,

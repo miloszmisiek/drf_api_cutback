@@ -18,7 +18,7 @@ class ProductList(generics.ListCreateAPIView):
     """
     serializer_class = ProductSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
-    queryset = Product.objects.all()
+    queryset = Product.objects.all().order_by('-created_at')
 
     def perform_create(self, serializer):
         """
@@ -71,7 +71,7 @@ class ProductImages(generics.ListCreateAPIView):
 
     serializer_class = ImageSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
-    queryset = ProductImage.objects.all()
+    queryset = ProductImage.objects.all().order_by('-created_at')
 
     def perform_create(self, serializer):
         """

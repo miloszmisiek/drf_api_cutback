@@ -16,7 +16,7 @@ class RatingsList(generics.ListCreateAPIView):
 
     serializer_class = RatingSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
-    queryset = Rating.objects.all()
+    queryset = Rating.objects.all().order_by('-created_at')
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
