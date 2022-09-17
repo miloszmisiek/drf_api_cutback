@@ -129,14 +129,3 @@ def delete_default(sender, instance, **kwargs):
     if ProductImage.objects.filter(product=instance.product.id, image=default_image):
         ProductImage.objects.filter(
             product=instance.product.id, image=default_image).delete()
-    else:
-        raise APIException(
-            "Something went wrong, product instance has no image.")
-
-    # ProductImage.objects.filter(
-    #     product=instance.product.id,
-    #     image=default_image
-    # ).delete() if ProductImage.objects.filter(
-    #     product=instance.product.id,
-    #     image=default_image
-    # ) else None
