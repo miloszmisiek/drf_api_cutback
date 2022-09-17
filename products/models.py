@@ -88,14 +88,14 @@ class ProductImage(models.Model):
 
 
 # DJANGO-SIGNALS FUNCTIONS
-@receiver(pre_save, sender=Product)
-def reject_products(sender, instance, **kwargs):
-    """
-    Method raises Exception when saved picture
-    exceeds the fifth allowed for the product.
-    """
-    if len(Product.objects.filter(owner=instance.owner)) >= 10:
-        raise APIException("Only 10 products allowed per user")
+# @receiver(pre_save, sender=Product)
+# def reject_products(sender, instance, **kwargs):
+#     """
+#     Method raises Exception when saved product
+#     exceeds the tenth allowed for the user.
+#     """
+#     if len(Product.objects.filter(owner=instance.owner)) >= 10:
+#         raise APIException("Only 10 products allowed per user")
 
 
 @receiver(post_save, sender=Product)

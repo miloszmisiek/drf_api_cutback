@@ -1,3 +1,4 @@
+from rest_framework.exceptions import APIException
 from rest_framework import generics, filters, status
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
@@ -23,7 +24,11 @@ class ProductList(generics.ListCreateAPIView):
         """
         Saves owner as a current user.
         """
-        serializer.save(owner=self.request.user)
+        if len(Product.objects.filter(owner=self.request.user)) >= 10:
+            raise APIException("Only 10 products allowed per user")
+        else:
+            serializer.save(owner=self.request.user)
+
 
     filter_backends = [
         DjangoFilterBackend,
@@ -63,7 +68,7 @@ class ProductImages(generics.ListCreateAPIView):
     List all Products images.
     Authenticated users can create new instances of Products images.
     """
-    
+
     serializer_class = ImageSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = ProductImage.objects.all()
@@ -74,6 +79,7 @@ class ProductImages(generics.ListCreateAPIView):
         """
         serializer.save(owner=self.request.user)
 
+
 class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
     """
     List specific Product by it's id.
@@ -83,6 +89,11 @@ class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ProductSerializer
     permission_classes = [IsOwnerOrReadOnly]
     queryset = Product.objects.all()
+
+    def perform_update(self, serializer):
+        instance = serializer.save()
+        if not ProductImage.objects.filter(product=instance):
+            ProductImage.objects.create(product=instance, owner=instance.owner)
 
 
 class ProductImagesDetail(generics.RetrieveUpdateDestroyAPIView):
