@@ -77,7 +77,7 @@ class ProductImage(models.Model):
         related_name="product_images"
     )
     image = models.ImageField(
-        upload_to='images/', default='../default-image_aqtoyb'
+        upload_to='images/', default='../default_gkffon'
     )
 
     def __str__(self):
