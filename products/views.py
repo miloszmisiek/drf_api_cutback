@@ -90,13 +90,13 @@ class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsOwnerOrReadOnly]
     queryset = Product.objects.all()
 
-    def perform_update(self, serializer):
-        """
-        Method checks if gallery is empty and and adds default image on update.
-        """
-        instance = serializer.save()
-        if not ProductImage.objects.filter(product=instance):
-            ProductImage.objects.create(product=instance, owner=instance.owner)
+    # def perform_update(self, serializer):
+    #     """
+    #     Method checks if gallery is empty and and adds default image on update.
+    #     """
+    #     instance = serializer.save()
+    #     if not ProductImage.objects.filter(product=instance):
+    #         ProductImage.objects.create(product=instance, owner=instance.owner)
 
 
 class ProductImagesDetail(generics.RetrieveUpdateDestroyAPIView):
