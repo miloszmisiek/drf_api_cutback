@@ -135,3 +135,4 @@ class ProductChoicesView(generics.GenericAPIView):
             return Response(return_dict, status=status.HTTP_200_OK)
         except:
             return Response({"Error": "Empty or invalid categories choices"}, status=status.HTTP_400_BAD_REQUEST)
+
