@@ -107,14 +107,14 @@ class ProductImage(models.Model):
 #         raise APIException("Only 10 products allowed per user")
 
 
-@receiver(post_save, sender=Product)
-def create_image(sender, instance, created, **kwargs):
-    """
-    Method creates ProductImage instance with default image
-    when post_save signal is received on Product instance creation.
-    """
-    if created and not ProductImage.objects.filter(product=instance):
-        ProductImage.objects.create(product=instance, owner=instance.owner)
+# @receiver(post_save, sender=Product)
+# def create_image(sender, instance, created, **kwargs):
+#     """
+#     Method creates ProductImage instance with default image
+#     when post_save signal is received on Product instance creation.
+#     """
+#     if created and not ProductImage.objects.filter(product=instance):
+#         ProductImage.objects.create(product=instance, owner=instance.owner)
 
 
 @receiver(pre_save, sender=ProductImage)
@@ -127,34 +127,34 @@ def reject_pictures(sender, instance, **kwargs):
         raise APIException("Only 5 pictures allowed for a product")
 
 
-@receiver(pre_save, sender=ProductImage)
-def delete_default(sender, instance, **kwargs):
-    """
-    Method deletes the default image only
-    when pre_save signal is received on ProductImage instance creation
-    and default image exists as an instance's product key.
-    """
-    default_image = "../default_gkffon"
-    # print("presave >>> ", ProductImage.objects.filter(
-    #     product=instance.product.id, image=default_image))
-    if ProductImage.objects.filter(product=instance.product.id, image=default_image):
-        ProductImage.objects.filter(
-            product=instance.product.id, image=default_image).delete()
+# @receiver(pre_save, sender=ProductImage)
+# def delete_default(sender, instance, **kwargs):
+#     """
+#     Method deletes the default image only
+#     when pre_save signal is received on ProductImage instance creation
+#     and default image exists as an instance's product key.
+#     """
+#     default_image = "../default_gkffon"
+#     # print("presave >>> ", ProductImage.objects.filter(
+#     #     product=instance.product.id, image=default_image))
+#     if ProductImage.objects.filter(product=instance.product.id, image=default_image):
+#         ProductImage.objects.filter(
+#             product=instance.product.id, image=default_image).delete()
 
 
-@receiver(post_delete, sender=ProductImage)
-def create_image(sender, instance, **kwargs):
-    """
-    Method creates ProductImage instance with default image
-    when post_delete signal is received on ProductImage instance.
-    Signal is executed if related product has no image's 
-    and the instance is not the default_image (pre_save delete_default signal conflict).
-    """
-    default_image = "../default_gkffon"
-    # print("postdelete instance image >>> ", instance.image)
-    # print("default image >>> ", default_image)
-    # print("instance == default image >>> ", instance.image == default_image)
-    if not ProductImage.objects.filter(product=instance.product.id) and not instance.image == default_image:
-        ProductImage.objects.create(
-            product=instance.product, owner=instance.owner)
-        print("post delete default created")
+# @receiver(post_delete, sender=ProductImage)
+# def create_image(sender, instance, **kwargs):
+#     """
+#     Method creates ProductImage instance with default image
+#     when post_delete signal is received on ProductImage instance.
+#     Signal is executed if related product has no image's 
+#     and the instance is not the default_image (pre_save delete_default signal conflict).
+#     """
+#     default_image = "../default_gkffon"
+#     # print("postdelete instance image >>> ", instance.image)
+#     # print("default image >>> ", default_image)
+#     # print("instance == default image >>> ", instance.image == default_image)
+#     if not ProductImage.objects.filter(product=instance.product.id) and not instance.image == default_image:
+#         ProductImage.objects.create(
+#             product=instance.product, owner=instance.owner)
+#         print("post delete default created")
