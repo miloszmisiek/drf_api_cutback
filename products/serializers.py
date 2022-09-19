@@ -37,6 +37,8 @@ class ProductSerializer(CountryFieldMixin, serializers.ModelSerializer):
     """
     owner = serializers.ReadOnlyField(source='owner.username')
     is_owner = serializers.SerializerMethodField()
+    profile_id = serializers.ReadOnlyField(source='owner.profile.id')
+    profile_image = serializers.ReadOnlyField(source='owner.profile.image.url')
     # category = serializers.ChoiceField(choices=Product.CATEGORIES)
     category_name = serializers.ReadOnlyField(source='get_category_display')
     price = MoneyField(max_digits=10, decimal_places=2, required=True)
@@ -96,7 +98,7 @@ class ProductSerializer(CountryFieldMixin, serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = (
-            'id', 'owner', 'is_owner', 'category', 'category_name',
+            'id', 'owner', 'is_owner', 'profile_id', 'profile_image', 'category', 'category_name',
             'price', 'price_currency', 'title', 'description', 'brand',
             'in_stock', 'street', 'city', 'country', 'created_at', 'updated_at', 'gallery', 'scores',
         )
