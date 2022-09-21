@@ -89,7 +89,7 @@ class ProductSerializer(CountryFieldMixin, serializers.ModelSerializer):
             product.product_rating.all(),
             many=True,
             context={'request': request}).data
-        scores = {f'score_count_{n}': 0
+        scores = {f'star_{n}': 0
              for n in range(1, len(Rating.RATE_CHOICES)+1)}
         statistics = {}
         statistics["scores"] = scores
@@ -100,7 +100,7 @@ class ProductSerializer(CountryFieldMixin, serializers.ModelSerializer):
         for dict in rating_data:
             for k, v in dict.items():
                 if k == 'score':
-                    scores[f'score_count_{v}'] += 1
+                    scores[f'star_{v}'] += 1
         return_data = {
             'data': rating_data,
             'statistics': statistics,
