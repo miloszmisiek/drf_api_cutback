@@ -6,6 +6,7 @@ from ratings.serializers import RatingSerializer
 from .models import Product, ProductImage
 from ratings.models import Rating
 from profiles.serializers import ProfileSerializer
+import array as arr
 
 
 class ImageSerializer(serializers.ModelSerializer):
@@ -88,10 +89,10 @@ class ProductSerializer(CountryFieldMixin, serializers.ModelSerializer):
             product.product_rating.all(),
             many=True,
             context={'request': request}).data
-        statistics = {
-            f'score_count_{n}': 0
-            for n in range(1, len(Rating.RATE_CHOICES)+1)
-        }
+        scores = {f'score_count_{n}': 0
+             for n in range(1, len(Rating.RATE_CHOICES)+1)}
+        statistics = {}
+        statistics["scores"] = scores
         statistics["all_scores"] = Product.objects.get(
             pk=product.id).all_scores if not None else None
         statistics["avg"] = Product.objects.get(
@@ -99,7 +100,7 @@ class ProductSerializer(CountryFieldMixin, serializers.ModelSerializer):
         for dict in rating_data:
             for k, v in dict.items():
                 if k == 'score':
-                    statistics[f'score_count_{v}'] += 1
+                    scores[f'score_count_{v}'] += 1
         return_data = {
             'data': rating_data,
             'statistics': statistics,
