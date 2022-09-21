@@ -36,12 +36,7 @@ class ProductSerializer(CountryFieldMixin, serializers.ModelSerializer):
     Handles nested serializers for ImageSerializer,
     RatingSerializer.
     """
-    owner = serializers.ReadOnlyField(source='owner.username')
-    is_owner = serializers.SerializerMethodField()
-    profile = serializers.SerializerMethodField()
-    profile_id = serializers.ReadOnlyField(source='owner.profile.id')
-    profile_image = serializers.ReadOnlyField(source='owner.profile.image.url')
-    # category = serializers.ChoiceField(choices=Product.CATEGORIES)
+    owner_profile = serializers.SerializerMethodField(read_only=True)
     category_name = serializers.ReadOnlyField(source='get_category_display')
     price = MoneyField(max_digits=10, decimal_places=2, required=True)
     price_currency = serializers.ChoiceField(choices=Product.CURRENCY_CHOICES)
@@ -64,7 +59,7 @@ class ProductSerializer(CountryFieldMixin, serializers.ModelSerializer):
         """
         return obj.get_price_currency_display()
 
-    def get_profile(self, product):
+    def get_owner_profile(self, product):
         """
         Loops through ImageSerializer data and returns list of images as URLs.
         """
@@ -115,7 +110,7 @@ class ProductSerializer(CountryFieldMixin, serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = (
-            'id', 'owner', 'is_owner', 'profile', 'profile_id', 'profile_image', 'category', 'category_name',
+            'id', 'owner_profile', 'category', 'category_name',
             'price', 'price_currency', 'price_currency_symbol', 'title', 'description', 'brand',
             'in_stock', 'street', 'city', 'country', 'created_at', 'updated_at', 'gallery', 'scores',
         )
