@@ -5,6 +5,7 @@ from djmoney.contrib.django_rest_framework import MoneyField
 from ratings.serializers import RatingSerializer
 from .models import Product, ProductImage
 from ratings.models import Rating
+from profiles.serializers import ProfileSerializer
 
 
 class ImageSerializer(serializers.ModelSerializer):
@@ -37,6 +38,7 @@ class ProductSerializer(CountryFieldMixin, serializers.ModelSerializer):
     """
     owner = serializers.ReadOnlyField(source='owner.username')
     is_owner = serializers.SerializerMethodField()
+    profile = serializers.SerializerMethodField()
     profile_id = serializers.ReadOnlyField(source='owner.profile.id')
     profile_image = serializers.ReadOnlyField(source='owner.profile.image.url')
     # category = serializers.ChoiceField(choices=Product.CATEGORIES)
@@ -61,6 +63,14 @@ class ProductSerializer(CountryFieldMixin, serializers.ModelSerializer):
         Method returns currency symbol.
         """
         return obj.get_price_currency_display()
+
+    def get_profile(self, product):
+        """
+        Loops through ImageSerializer data and returns list of images as URLs.
+        """
+        request = self.context['request']
+        return ProfileSerializer(
+            product.owner.profile, context={'request': request}).data
 
     def get_gallery(self, product):
         """
@@ -105,7 +115,7 @@ class ProductSerializer(CountryFieldMixin, serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = (
-            'id', 'owner', 'is_owner', 'profile_id', 'profile_image', 'category', 'category_name',
-            'price', 'price_currency','price_currency_symbol', 'title', 'description', 'brand',
+            'id', 'owner', 'is_owner', 'profile', 'profile_id', 'profile_image', 'category', 'category_name',
+            'price', 'price_currency', 'price_currency_symbol', 'title', 'description', 'brand',
             'in_stock', 'street', 'city', 'country', 'created_at', 'updated_at', 'gallery', 'scores',
         )
