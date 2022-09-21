@@ -45,7 +45,7 @@ class Product(models.Model):
     category = models.IntegerField(choices=CATEGORIES, blank=False)
     price = MoneyField(max_digits=10, decimal_places=2, blank=False,
                        currency_choices=CURRENCY_CHOICES)
-    title = models.CharField(max_length=15, blank=False)
+    title = models.CharField(max_length=30, blank=False)
     description = models.TextField(max_length=500)
     brand = models.CharField(max_length=15)
     in_stock = models.BooleanField(blank=False, default=False)
