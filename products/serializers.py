@@ -90,23 +90,24 @@ class ProductSerializer(CountryFieldMixin, serializers.ModelSerializer):
             many=True,
             context={'request': request}).data
         scores = {f'star_{n}': 0
-             for n in range(1, len(Rating.RATE_CHOICES)+1)}
+                  for n in range(1, len(Rating.RATE_CHOICES)+1)}
         statistics = {}
         statistics["scores"] = scores
         statistics["all_scores"] = Product.objects.get(
             pk=product.id).all_scores if not None else None
         statistics["avg"] = Product.objects.get(
-            pk=product.id).avg_score
+            pk=product.id).avg_score if Product.objects.get(
+            pk=product.id).avg_score else 0
         for dict in rating_data:
             for k, v in dict.items():
                 if k == 'score':
                     scores[f'star_{v}'] += 1
         return_data = {
-            'data': rating_data,
+            'data': rating_data if rating_data else [],
             'statistics': statistics,
         }
 
-        return return_data if rating_data else {}
+        return return_data
 
     class Meta:
         model = Product
