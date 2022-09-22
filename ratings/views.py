@@ -30,7 +30,7 @@ class RatingsList(generics.ListCreateAPIView):
     ]
 
 
-class RatingDetail(generics.RetrieveDestroyAPIView):
+class RatingDetail(generics.RetrieveUpdateDestroyAPIView):
     """
     Retrive a specific Rating.
     The owner of the Raging can delete it from the database.
