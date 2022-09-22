@@ -44,6 +44,7 @@ class ProductSerializer(CountryFieldMixin, serializers.ModelSerializer):
     price_currency_symbol = serializers.SerializerMethodField(read_only=True)
     gallery = serializers.SerializerMethodField()
     scores = serializers.SerializerMethodField()
+    comments_count = serializers.ReadOnlyField()
     country = CountryField(country_dict=True)
 
     def get_is_owner(self, obj):
@@ -114,5 +115,5 @@ class ProductSerializer(CountryFieldMixin, serializers.ModelSerializer):
         fields = (
             'id', 'owner_profile', 'category', 'category_name',
             'price', 'price_currency', 'price_currency_symbol', 'title', 'description', 'brand',
-            'in_stock', 'street', 'city', 'country', 'created_at', 'updated_at', 'gallery', 'scores',
+            'in_stock', 'street', 'city', 'country', 'created_at', 'updated_at', 'gallery', 'scores', 'comments_count',
         )

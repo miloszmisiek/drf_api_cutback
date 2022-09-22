@@ -2,6 +2,7 @@ from rest_framework.exceptions import APIException
 from rest_framework import generics, filters, status
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
+from django.db.models import Count
 from drf_api_cutback.permissions import (
     IsOwnerOrReadOnly,
     IsAuthenticatedOrReadOnly
@@ -18,7 +19,9 @@ class ProductList(generics.ListCreateAPIView):
     """
     serializer_class = ProductSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
-    queryset = Product.objects.all().order_by('-created_at')
+    queryset = Product.objects.annotate(
+        comments_count=Count('product_comments', distinct=True)
+    ).order_by('-created_at')
 
     def perform_create(self, serializer):
         """
@@ -28,7 +31,6 @@ class ProductList(generics.ListCreateAPIView):
             raise APIException("Only 10 products allowed per user")
         else:
             serializer.save(owner=self.request.user)
-
 
     filter_backends = [
         DjangoFilterBackend,
@@ -88,7 +90,9 @@ class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
     """
     serializer_class = ProductSerializer
     permission_classes = [IsOwnerOrReadOnly]
-    queryset = Product.objects.all()
+    queryset = Product.objects.annotate(
+        comments_count=Count('product_comments', distinct=True)
+    ).order_by('-created_at')
 
     # def perform_update(self, serializer):
     #     """
@@ -135,4 +139,3 @@ class ProductChoicesView(generics.GenericAPIView):
             return Response(return_dict, status=status.HTTP_200_OK)
         except:
             return Response({"Error": "Empty or invalid categories choices"}, status=status.HTTP_400_BAD_REQUEST)
-
