@@ -14,7 +14,7 @@ class ProfileList(generics.ListAPIView):
     serializer_class = ProfileSerializer
     queryset = Profile.objects.annotate(
         products_count=Count('owner__product', distinct=True),
-        ratings_count=Count('owner__rating', distinct=True),
+        ratings_count=Count('owner__product__owner__rating', distinct=True),
         comments_count=Count('owner__comment', distinct=True)
     ).order_by('-created_at')
 
@@ -46,4 +46,8 @@ class ProfileDetail(generics.RetrieveUpdateDestroyAPIView):
     """
     serializer_class = ProfileSerializer
     permission_classes = [IsOwnerOrReadOnly]
-    queryset = Profile.objects.all()
+    queryset = Profile.objects.annotate(
+        products_count=Count('owner__product', distinct=True),
+        ratings_count=Count('owner__rating', distinct=True),
+        comments_count=Count('owner__comment', distinct=True)
+    ).order_by('-created_at')
