@@ -6,6 +6,20 @@ from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from allauth.account.signals import email_confirmed
 
+class ProfileRatingManager(models.Manager):
+    """
+    Custom model manager allowing for avg_score
+    and all_scores to be avaialble globally.
+    """
+
+    def get_queryset(self):
+        """
+        Returns queryset annotated with avg_score and all_scores fields.
+        """
+        return super(ProfileRatingManager, self).get_queryset().annotate(
+            avg_score=models.Avg('owner__product__product_rating__score'),
+            all_scores=models.Count('owner__product__product_rating__score')
+        )
 
 class User(AbstractUser):
     """
@@ -35,6 +49,8 @@ class Profile(models.Model):
         upload_to='images/', default='../default_profile_glasses_r9uhlr'
     )
     phone_number = PhoneNumberField()
+
+    objects = ProfileRatingManager()
 
     class Meta:
         ordering = ['-created_at']
