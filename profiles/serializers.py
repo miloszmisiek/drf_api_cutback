@@ -8,7 +8,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     The create method handles the unique constraint on 'owner' and 'post'
     """
     owner = serializers.ReadOnlyField(source='owner.username')
-    email = serializers.EmailField(source='owner.email')
+    email = serializers.ReadOnlyField(source='owner.email')
     first_name = serializers.CharField(source='owner.first_name')
     last_name = serializers.CharField(source='owner.last_name')
     is_owner = serializers.SerializerMethodField()
