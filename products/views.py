@@ -43,7 +43,8 @@ class ProductList(generics.ListCreateAPIView):
         'category',
         'brand',
         'country',
-        'city'
+        'city',
+        'price_currency',
 
     ]
     ordering_fields = [
