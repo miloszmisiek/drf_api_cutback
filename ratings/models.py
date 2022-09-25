@@ -8,11 +8,11 @@ class Rating(models.Model):
     The Rating model with releation to User and Product model..
     """
     RATE_CHOICES = (
-        (5, "excellent"),
-        (4, "very good"),
-        (3, "good"),
-        (2, "poor"),
-        (1, "bad"),
+        (5, u'\u2605'*5),
+        (4, u'\u2605'*4),
+        (3, u'\u2605'*3),
+        (2, u'\u2605'*2),
+        (1, u'\u2605'),
     )
     owner = models.ForeignKey(settings.AUTH_USER_MODEL,
                               on_delete=models.CASCADE)
