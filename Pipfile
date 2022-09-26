@@ -10,7 +10,7 @@ pillow = "*"
 django-phonenumber-field = "*"
 django-phonenumbers = "*"
 djangorestframework = "*"
-django-money = "*"
+django-money = {extras = ["exchange"], version = "*"}
 django-filter = "*"
 django-countries = "*"
 dj-rest-auth = {extras = ["with_social"], version = "*"}

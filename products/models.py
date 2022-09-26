@@ -7,7 +7,6 @@ from django.db.models.signals import post_save, pre_save, post_delete
 from django.dispatch import receiver
 from djmoney.models.fields import MoneyField
 
-
 class ProductRatingManager(models.Manager):
     """
     Custom model manager allowing for avg_score
@@ -18,10 +17,12 @@ class ProductRatingManager(models.Manager):
         """
         Returns queryset annotated with avg_score and all_scores fields.
         """
+        # query = Product.objects.values('price')
+        # print(query)
         return super(ProductRatingManager, self).get_queryset().annotate(
             avg_score=Coalesce(models.Avg(
                 ('product_rating__score')), models.Value(0.0)),
-            all_scores=models.Count('product_rating__score')
+            all_scores=models.Count('product_rating__score'),
         )
 
 

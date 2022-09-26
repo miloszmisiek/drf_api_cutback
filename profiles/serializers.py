@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Profile
-from phonenumber_field.serializerfields import PhoneNumberField
+
 
 class ProfileSerializer(serializers.ModelSerializer):
     """
@@ -17,6 +17,8 @@ class ProfileSerializer(serializers.ModelSerializer):
     comments_count = serializers.ReadOnlyField()
     avg_score = serializers.SerializerMethodField()
     all_scores = serializers.SerializerMethodField()
+
+
 
     def get_is_owner(self, obj):
         """

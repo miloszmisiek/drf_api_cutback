@@ -48,7 +48,7 @@ class ProductList(generics.ListCreateAPIView):
 
     ]
     ordering_fields = [
-        'price',
+        # 'price_usd',
         'avg_score',
         'all_scores',
         'title',
