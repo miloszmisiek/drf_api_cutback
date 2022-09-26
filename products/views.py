@@ -44,10 +44,9 @@ class ProductList(generics.ListCreateAPIView):
         'brand',
         'country',
         'city',
-        'price_currency',
-
     ]
     ordering_fields = [
+        'price',
         'avg_score',
         'all_scores',
         'title',

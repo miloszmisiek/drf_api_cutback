@@ -41,7 +41,7 @@ class ProductSerializer(CountryFieldMixin, serializers.ModelSerializer):
     """
     owner_profile = serializers.SerializerMethodField(read_only=True)
     category_name = serializers.ReadOnlyField(source='get_category_display')
-    price = MoneyField(max_digits=10, decimal_places=2, required=True)
+    # price = MoneyField(max_digits=10, decimal_places=2, required=True)
     # price_usd = serializers.SerializerMethodField(read_only=True)
     # price_currency = serializers.ChoiceField(choices=Product.CURRENCY_CHOICES)
     # price_currency_symbol = serializers.SerializerMethodField(read_only=True)
