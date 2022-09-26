@@ -7,6 +7,7 @@ from django.db.models.signals import post_save, pre_save, post_delete
 from django.dispatch import receiver
 from djmoney.models.fields import MoneyField
 
+
 class ProductRatingManager(models.Manager):
     """
     Custom model manager allowing for avg_score
@@ -37,17 +38,17 @@ class Product(models.Model):
         (3, "Harnesses"),
         (4, "Others"),
     )
-    CURRENCY_CHOICES = (
-        ('EUR', u'\u20ac'),
-        ('USD', u'\u0024'),
-        ('GBP', u'\u00a3'),
-        ('PLN', 'z' + u'\u0142'),
-    )
+    # CURRENCY_CHOICES = (
+    #     ('EUR', u'\u20ac'),
+    #     ('USD', u'\u0024'),
+    #     ('GBP', u'\u00a3'),
+    #     ('PLN', 'z' + u'\u0142'),
+    # )
     owner = models.ForeignKey(settings.AUTH_USER_MODEL,
                               on_delete=models.CASCADE)
     category = models.IntegerField(choices=CATEGORIES, blank=False)
     price = MoneyField(max_digits=10, decimal_places=2, blank=False,
-                       currency_choices=CURRENCY_CHOICES)
+                       default_currency='EUR')
     title = models.CharField(max_length=30, blank=False)
     description = models.TextField(max_length=500)
     brand = models.CharField(max_length=15)

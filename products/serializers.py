@@ -43,8 +43,8 @@ class ProductSerializer(CountryFieldMixin, serializers.ModelSerializer):
     category_name = serializers.ReadOnlyField(source='get_category_display')
     price = MoneyField(max_digits=10, decimal_places=2, required=True)
     # price_usd = serializers.SerializerMethodField(read_only=True)
-    price_currency = serializers.ChoiceField(choices=Product.CURRENCY_CHOICES)
-    price_currency_symbol = serializers.SerializerMethodField(read_only=True)
+    # price_currency = serializers.ChoiceField(choices=Product.CURRENCY_CHOICES)
+    # price_currency_symbol = serializers.SerializerMethodField(read_only=True)
     gallery = serializers.SerializerMethodField()
     scores = serializers.SerializerMethodField()
     comments_count = serializers.ReadOnlyField()
@@ -64,11 +64,11 @@ class ProductSerializer(CountryFieldMixin, serializers.ModelSerializer):
         request = self.context['request']
         return request.user == obj.owner
 
-    def get_price_currency_symbol(self, obj):
-        """
-        Method returns currency symbol.
-        """
-        return obj.get_price_currency_display()
+    # def get_price_currency_symbol(self, obj):
+    #     """
+    #     Method returns currency symbol.
+    #     """
+    #     return obj.get_price_currency_display()
 
     def get_owner_profile(self, product):
         """
@@ -122,7 +122,7 @@ class ProductSerializer(CountryFieldMixin, serializers.ModelSerializer):
         model = Product
         fields = (
             'id', 'owner_profile', 'category', 'category_name',
-            'price', 'price_currency', 'price_currency_symbol', 'title', 'description', 'brand',
+            'price', 'price_currency', 'title', 'description', 'brand',
             'in_stock', 'street', 'city', 'country', 'created_at', 'updated_at', 'gallery', 'scores', 'comments_count',
             # 'price_usd',
         )
