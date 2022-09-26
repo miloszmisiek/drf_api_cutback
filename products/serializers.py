@@ -42,7 +42,7 @@ class ProductSerializer(CountryFieldMixin, serializers.ModelSerializer):
     owner_profile = serializers.SerializerMethodField(read_only=True)
     category_name = serializers.ReadOnlyField(source='get_category_display')
     price = MoneyField(max_digits=10, decimal_places=2, required=True)
-    price_usd = serializers.SerializerMethodField(read_only=True)
+    # price_usd = serializers.SerializerMethodField(read_only=True)
     price_currency = serializers.ChoiceField(choices=Product.CURRENCY_CHOICES)
     price_currency_symbol = serializers.SerializerMethodField(read_only=True)
     gallery = serializers.SerializerMethodField()
@@ -50,11 +50,11 @@ class ProductSerializer(CountryFieldMixin, serializers.ModelSerializer):
     comments_count = serializers.ReadOnlyField()
     country = CountryField(country_dict=True)
 
-    def get_price_usd(self, obj):
-        """
-        Method returns price in USD for sorting purposes.
-        """
-        return round(convert_money(obj.price, 'USD').amount, 2)
+    # def get_price_usd(self, obj):
+    #     """
+    #     Method returns price in USD for sorting purposes.
+    #     """
+    #     return round(convert_money(obj.price, 'USD').amount, 2)
 
     def get_is_owner(self, obj):
         """
@@ -122,6 +122,7 @@ class ProductSerializer(CountryFieldMixin, serializers.ModelSerializer):
         model = Product
         fields = (
             'id', 'owner_profile', 'category', 'category_name',
-            'price', 'price_currency', 'price_currency_symbol', 'price_usd', 'title', 'description', 'brand',
+            'price', 'price_currency', 'price_currency_symbol', 'title', 'description', 'brand',
             'in_stock', 'street', 'city', 'country', 'created_at', 'updated_at', 'gallery', 'scores', 'comments_count',
+            # 'price_usd',
         )
