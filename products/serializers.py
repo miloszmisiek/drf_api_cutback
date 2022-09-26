@@ -95,10 +95,9 @@ class ProductSerializer(CountryFieldMixin, serializers.ModelSerializer):
         statistics = {}
         statistics["scores"] = scores
         statistics["all_scores"] = Product.objects.get(
-            pk=product.id).all_scores if not None else None
+            pk=product.id).all_scores
         statistics["avg"] = Product.objects.get(
-            pk=product.id).avg_score if Product.objects.get(
-            pk=product.id).avg_score else 0
+            pk=product.id).avg_score
         for dict in rating_data:
             for k, v in dict.items():
                 if k == 'score':

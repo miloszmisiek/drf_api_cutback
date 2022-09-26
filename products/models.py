@@ -1,5 +1,6 @@
 from rest_framework.exceptions import APIException
 from django_countries.fields import CountryField
+from django.db.models.functions import Coalesce
 from django.db import models
 from django.conf import settings
 from django.db.models.signals import post_save, pre_save, post_delete
@@ -18,7 +19,8 @@ class ProductRatingManager(models.Manager):
         Returns queryset annotated with avg_score and all_scores fields.
         """
         return super(ProductRatingManager, self).get_queryset().annotate(
-            avg_score=models.Avg('product_rating__score'),
+            avg_score=Coalesce(models.Avg(
+                ('product_rating__score')), models.Value(0.0)),
             all_scores=models.Count('product_rating__score')
         )
 
@@ -147,7 +149,7 @@ def reject_pictures(sender, instance, **kwargs):
 #     """
 #     Method creates ProductImage instance with default image
 #     when post_delete signal is received on ProductImage instance.
-#     Signal is executed if related product has no image's 
+#     Signal is executed if related product has no image's
 #     and the instance is not the default_image (pre_save delete_default signal conflict).
 #     """
 #     default_image = "../default_gkffon"
