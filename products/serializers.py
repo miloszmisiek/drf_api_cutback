@@ -11,7 +11,6 @@ from djmoney.contrib.exchange.models import convert_money
 from djmoney.contrib.exchange.backends import FixerBackend
 
 
-
 class ImageSerializer(serializers.ModelSerializer):
     """
     Serializer for ProductImage model. Product title added for clarity.
@@ -55,7 +54,7 @@ class ProductSerializer(CountryFieldMixin, serializers.ModelSerializer):
         """
         Method returns price in USD for sorting purposes.
         """
-        return convert_money(obj.price, 'USD').amount
+        return round(convert_money(obj.price, 'USD').amount, 2)
 
     def get_is_owner(self, obj):
         """
