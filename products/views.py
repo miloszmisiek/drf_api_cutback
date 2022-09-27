@@ -133,7 +133,6 @@ class ProductChoicesView(generics.GenericAPIView):
         try:
             return_dict = {
                 "CATEGORIES": self.append_key_value_pairs(Product.CATEGORIES),
-                "CURRENCIES": self.append_key_value_pairs(Product.CURRENCY_CHOICES),
             }
             return Response(return_dict, status=status.HTTP_200_OK)
         except:
