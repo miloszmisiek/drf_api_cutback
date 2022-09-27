@@ -133,8 +133,13 @@ ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = True
 ACCOUNT_USERNAME_MIN_LENGTH = 4
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
-LOGIN_URL = "/api-auth/login/"
-LOGIN_REDIRECT_URL = '/'
+if 'DEV' in os.environ:
+    LOGIN_URL = "/api-auth/login/"
+    LOGIN_REDIRECT_URL = '/'
+else:
+    LOGIN_URL = "https://cutback-project.herokuapp.com/singin"
+    LOGIN_REDIRECT_URL = 'https://cutback-project.herokuapp.com/'
+
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
