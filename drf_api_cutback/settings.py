@@ -137,7 +137,7 @@ if 'DEV' in os.environ:
     LOGIN_URL = "/api-auth/login/"
     LOGIN_REDIRECT_URL = '/'
 else:
-    LOGIN_URL = "https://cutback-project.herokuapp.com/singin"
+    LOGIN_URL = "https://cutback-project.herokuapp.com/signin"
     LOGIN_REDIRECT_URL = 'https://cutback-project.herokuapp.com/'
 
 
