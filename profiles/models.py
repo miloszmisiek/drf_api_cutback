@@ -4,7 +4,7 @@ from django.contrib.auth.models import AbstractUser
 from phonenumber_field.modelfields import PhoneNumberField
 from allauth.account.models import EmailAddress
 from allauth.account.utils import *
-from django.db.models.signals import post_save, post_delete
+from django.db.models.signals import post_save, post_delete, pre_delete
 from django.dispatch import receiver
 from allauth.account.signals import email_confirmed, email_changed, email_added
 
@@ -85,7 +85,10 @@ def delete_profile(sender, instance, **kwargs):
     """
     Method deletes user on Profile deletion.
     """
-    User.objects.get(pk=instance.owner.id).delete()
+    user = User.objects.get(pk=instance.owner.id)
+    user.is_active = False
+    user.email_verified = False
+    user.save()
 
 
 @receiver(email_confirmed)
