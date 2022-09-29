@@ -3,7 +3,7 @@ from django_countries.fields import CountryField
 from django.db.models.functions import Coalesce
 from django.db import models
 from django.conf import settings
-from django.db.models.signals import post_save, pre_save, post_delete
+from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from djmoney.models.fields import MoneyField
 
@@ -18,8 +18,6 @@ class ProductRatingManager(models.Manager):
         """
         Returns queryset annotated with avg_score and all_scores fields.
         """
-        # query = Product.objects.values('price')
-        # print(query)
         return super(ProductRatingManager, self).get_queryset().annotate(
             avg_score=Coalesce(models.Avg(
                 ('product_rating__score')), models.Value(0.0)),
@@ -92,8 +90,6 @@ class ProductImage(models.Model):
         String representation of Product's image object.
         """
         return self.image.url
-
-
 
 
 @receiver(pre_save, sender=ProductImage)
