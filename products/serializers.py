@@ -1,14 +1,10 @@
 from django_countries.serializer_fields import CountryField
 from django_countries.serializers import CountryFieldMixin
 from rest_framework import serializers
-from djmoney.contrib.django_rest_framework import MoneyField
 from ratings.serializers import RatingSerializer
 from .models import Product, ProductImage
 from ratings.models import Rating
 from profiles.serializers import ProfileSerializer
-from djmoney.money import Money
-from djmoney.contrib.exchange.models import convert_money
-from djmoney.contrib.exchange.backends import FixerBackend
 
 
 class ImageSerializer(serializers.ModelSerializer):
@@ -41,20 +37,11 @@ class ProductSerializer(CountryFieldMixin, serializers.ModelSerializer):
     """
     owner_profile = serializers.SerializerMethodField(read_only=True)
     category_name = serializers.ReadOnlyField(source='get_category_display')
-    # price = MoneyField(max_digits=10, decimal_places=2, required=True)
-    # price_usd = serializers.SerializerMethodField(read_only=True)
-    # price_currency = serializers.ChoiceField(choices=Product.CURRENCY_CHOICES)
-    # price_currency_symbol = serializers.SerializerMethodField(read_only=True)
     gallery = serializers.SerializerMethodField()
     scores = serializers.SerializerMethodField()
     comments_count = serializers.ReadOnlyField()
     country = CountryField(country_dict=True)
 
-    # def get_price_usd(self, obj):
-    #     """
-    #     Method returns price in USD for sorting purposes.
-    #     """
-    #     return round(convert_money(obj.price, 'USD').amount, 2)
 
     def get_is_owner(self, obj):
         """
@@ -63,12 +50,6 @@ class ProductSerializer(CountryFieldMixin, serializers.ModelSerializer):
         """
         request = self.context['request']
         return request.user == obj.owner
-
-    # def get_price_currency_symbol(self, obj):
-    #     """
-    #     Method returns currency symbol.
-    #     """
-    #     return obj.get_price_currency_display()
 
     def get_owner_profile(self, product):
         """
@@ -123,6 +104,6 @@ class ProductSerializer(CountryFieldMixin, serializers.ModelSerializer):
         fields = (
             'id', 'owner_profile', 'category', 'category_name',
             'price', 'price_currency', 'title', 'description', 'brand',
-            'in_stock', 'street', 'city', 'country', 'created_at', 'updated_at', 'gallery', 'scores', 'comments_count',
-            # 'price_usd',
+            'in_stock', 'street', 'city', 'country', 'created_at', 'updated_at', 
+            'gallery', 'scores', 'comments_count',
         )

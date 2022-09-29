@@ -93,14 +93,6 @@ class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
         comments_count=Count('product_comments', distinct=True)
     ).order_by('-created_at')
 
-    # def perform_update(self, serializer):
-    #     """
-    #     Method checks if gallery is empty and and adds default image on update.
-    #     """
-    #     instance = serializer.save()
-    #     if not ProductImage.objects.filter(product=instance):
-    #         ProductImage.objects.create(product=instance, owner=instance.owner)
-
 
 class ProductImagesDetail(generics.RetrieveUpdateDestroyAPIView):
     """
@@ -117,7 +109,6 @@ class ProductChoicesView(generics.GenericAPIView):
     """
     List categories and currencies choices for Product model.
     """
-
     def append_key_value_pairs(self, choices):
         """
         Iterate over choices and return list of choice's objects

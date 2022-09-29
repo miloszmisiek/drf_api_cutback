@@ -160,6 +160,8 @@ All bugs were resolved in the development process. Any worth-mentioning bugs are
  - The ERD was created using [draw.io](draw.io).
  - The ERD can be found [here](documentation/deployment/cutback-erd-final.jpg). 
 
+- The final production version defers with the planned data model. The location model was integrated to the Product model and currency choices were removed - only one was used for the app development.
+
 ### Data Modeling
 1. **User**
   
@@ -172,10 +174,9 @@ All bugs were resolved in the development process. Any worth-mentioning bugs are
 | Last Name     | last_name     | CharField     | max_length=50, blank=False    |
 | Email Verified          | email_verified         | BooleanField  | default=False    |
 
-1. **Profile**
+2. **Profile**
 
   Designed as a custom model inheriting from Django models.Model. This model is a helper model for the User. Creates profile for User instance with OneToOne relationship.
-  - django-signals handles creation and deletion of profiles - when the user completes registration, profiles are automatically generated; when the user deletes his profile, his account is deleted as well.
   - When the user did not select any profile picture, the default picture is added by django-signals.
   - django-phonenumber-field is used to store phone number data.
   
@@ -187,7 +188,7 @@ All bugs were resolved in the development process. Any worth-mentioning bugs are
 | Image     | image     | ImageField     | upload_to='images/', default='../default_profile_glasses_r9uhlr'    |
 | Phone Number          | phone_number         | PhoneNumberField  |    |
 
-3. **Products**
+1. **Products**
    
   Designed as a custom model inheriting from Django models.Model. This model is a core data structure for the application and is used to organize Products created by users.
   - django-signals handles extra validation - users are allowed to store 10 products.
@@ -204,6 +205,10 @@ All bugs were resolved in the development process. Any worth-mentioning bugs are
 | In Stock | in_stock          | BooleanField         | blank=False, default=False  |
 | Created At         | created_at         | DateTimeField    | auto_now_add=True    |
 | Updated At    | updated_at    | DateTimeField     | auto_now=True    |
+| Address      | address      | CharField     | max_length=100|
+| City         | city         | CharField    | max_length=50   |
+| Country         | country         | CountryField    | blank_label='(select country)'   |
+| Product      | product      | ForeignKey     |          Product, default=None, on_delete=models.CASCADE, related_name="product_location"    |
 
 ```Python
     CATEGORIES = (
@@ -212,14 +217,6 @@ All bugs were resolved in the development process. Any worth-mentioning bugs are
         (2, "Wetsuits"),
         (3, "Harnesses"),
         (4, "Others"),
-    )
-    CURRENCY_CHOICES = (
-        ('EUR', 'EUR'),
-        ('USD', 'USD'),
-        ('GBP', 'GBP'),
-        ('PLN', 'PLN')
-    )
-
 ```
 
 4. **Product Image**
@@ -233,19 +230,8 @@ All bugs were resolved in the development process. Any worth-mentioning bugs are
 | Product      | product      | ForeignKey     |          Product, default=None, on_delete=models.CASCADE, related_name="product_images"    |
 | Image         | image         | ImageField    | upload_to='images/', default='../default-image_aqtoyb'   |
 
-5. **Location**
-   
-  Designed as a custom model inheriting from Django models.Model. This model is a helper model to store Product location.
-  django-countries is used to store country data.
 
-|     Name          | Database Key  | Field Type    | Validation |
-| ------------- | ------------- | ------------- | ---------- |
-| Address      | address      | CharField     | max_length=100|
-| City         | city         | CharField    | max_length=50   |
-| Country         | country         | CountryField    | blank_label='(select country)'   |
-| Product      | product      | ForeignKey     |          Product, default=None, on_delete=models.CASCADE, related_name="product_location"    |
-
-6. **Rating**
+5. **Rating**
    
   Designed as a custom model inheriting from Django models.Model. This model stores Ratings for products. The product can be rated on a scale of 1-5.
 
@@ -267,7 +253,7 @@ All bugs were resolved in the development process. Any worth-mentioning bugs are
     )
 ```
 
-7. **Comment**
+6. **Comment**
   Designed as a custom model inheriting from Django models.Model. This model stores Comments for products.
 
 |     Name          | Database Key  | Field Type    | Validation |
